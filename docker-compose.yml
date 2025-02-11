@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3002"
+    environment:
+      - FLASK_ENV=production
+    volumes:
+      - .:/app
