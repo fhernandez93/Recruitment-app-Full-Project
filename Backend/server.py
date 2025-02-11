@@ -7,7 +7,7 @@ from API_Module import *
 
 import variables
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="frontend_build")
 
 app.register_blueprint(db_blueprint)
 
@@ -24,7 +24,7 @@ auth = identity.web.Auth(
     client_credential=app.config["CLIENT_SECRET"],
 )
 
-@app.route("/login")
+@app.route("/test/login")
 def login():
     return auth.log_in(
         scopes=variables.SCOPE, # Have user consent to scopes during log-in
@@ -52,12 +52,12 @@ def get_user_info():
         return jsonify({"error": "User not authenticated"}), 401
     return jsonify(user)
 
-@app.route("/")
-def index():
-    user = auth.get_user()
-    if not user:
-        return redirect(url_for("login"))
-    return render_template("index.html", user=user)
+# @app.route("/")
+# def index():
+#     user = auth.get_user()
+#     if not user:
+#         return redirect(url_for("login"))
+#     return render_template("index.html", user=user)
 
 @app.route("/call_downstream_api")
 def call_downstream_api():
@@ -73,5 +73,22 @@ def call_downstream_api():
     return render_template('display.html', result=api_result)
 
 
+# if __name__ == "__main__":
+#     app.run(debug=True, port=3000)
+
+from flask import Flask, send_from_directory
+
+
+@app.route("/")
+def serve_react():
+    return send_from_directory(app.static_folder, "index.html")
+
+
+# Serve other static files like CSS and JS
+@app.route("/<path:path>")
+def serve_static_files(path):
+    return send_from_directory(app.static_folder, path)
+
+
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(host="0.0.0.0", port=3000)
