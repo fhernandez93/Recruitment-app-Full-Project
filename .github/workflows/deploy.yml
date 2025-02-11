@@ -15,19 +15,19 @@ jobs:
 
       - name: Log in to Azure Container Registry
         uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
 
       - name: Build and push Docker image
         run: |
-          az acr login --name <your-acr-name>
-          docker build -t <your-acr-name>.azurecr.io/my-flask-react-app:latest .
-          docker push <your-acr-name>.azurecr.io/my-flask-react-app:latest
+          az login
+          az acr login --name optrecruitmentapp
+          docker buildx build --platform=linux/amd64 -t optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest .   
+          docker push optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest   
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: <your-app-name>
-          images: <your-acr-name>.azurecr.io/my-flask-react-app:latest
+          app-name: opt-recruitment-app-web
+          images: optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest
 
 
