@@ -1,4 +1,4 @@
-name: Build and Deploy to Azure
+# name: Build and Deploy to Azure
 
 on:
   push:
@@ -9,21 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Build and push Docker image
-        run: |
-          az login
-          az acr login --name optrecruitmentapp
-          docker buildx build --platform=linux/amd64 -t optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest .   
-          docker push optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest   
+#       - name: Build and push Docker image
+#         run: |
+#           az login
+#           az acr login --name optrecruitmentapp
+#           docker buildx build --platform=linux/amd64 -t optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest .   
+#           docker push optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest   
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: opt-recruitment-app-web
-          images: optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest
+#       - name: Deploy to Azure Web App
+#         uses: azure/webapps-deploy@v2
+#         with:
+#           app-name: opt-recruitment-app-web
+#           images: optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest
 
 
