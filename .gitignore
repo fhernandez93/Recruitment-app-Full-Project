@@ -31,3 +31,4 @@ Documentation
 flask_session
 *.ipynb
 gits
+__pycache__

@@ -51,20 +51,20 @@ const Section = () => {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/members`)
-        .then(response => setMembers(response.data.members))
+    axios.get(`/data/jobs`)
+        .then(response => setMembers(response.data))
         .catch(error => console.error('Error fetching members:', error));
 }, []);
   return (
     <React.Fragment>
-        <div>
-            <h1>Members</h1>
-            <ul>
-                {members.map((member, index) => (
-                    <li key={index}>{member}</li>
-                ))}
-            </ul>
-        </div>
+       <div>
+        <h1>Members</h1>
+        <ul>
+          {members.map(member => (
+            <li key={member.ID}>{member.name}</li>
+          ))}
+        </ul>
+      </div>
       <section className="section hero-section bg-ico-hero" id="home">
         <div className="bg-overlay bg-primary" />
         <Container>

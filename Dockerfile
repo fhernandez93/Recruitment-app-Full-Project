@@ -10,6 +10,8 @@ WORKDIR /frontend
 COPY frontend/ .
 RUN yarn install && yarn run build
 
+# Install 'serve' to serve the React build
+
 # Final Image
 FROM python:3.12.8
 WORKDIR /app
@@ -29,9 +31,21 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN apt-get update 
 RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18 
 RUN apt-get install -y unixodbc-dev
-RUN pip3 install -r requirements.txt
-
+RUN pip install -r requirements.txt
 RUN az login
-EXPOSE 3000
 
-CMD ["python","server.py"]
+# Install dependencies
+RUN apt-get update && apt-get install -y gcc curl nginx
+
+# Setup Nginx
+COPY /default.conf /etc/nginx/conf.d/default.conf
+RUN rm -rf /usr/share/nginx/html/* && \
+    cp -r ./frontend_build/* /usr/share/nginx/html/
+
+# Expose the ports for backend and frontend
+EXPOSE 3000 3001
+
+# Serve the React app on port 3001 and Flask app on port 5000
+CMD service nginx start && python server.py
+
+

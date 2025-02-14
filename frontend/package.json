@@ -1,9 +1,8 @@
 {
   "name": "optumus-suite",
   "private": true,
-  "version": "1.0.0",
-  "proxy":"http://localhost:3000",
   "scripts": {
+    "start": "set PORT=3001 && yarn run dev",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

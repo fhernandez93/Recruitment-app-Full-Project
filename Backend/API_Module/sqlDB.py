@@ -1,6 +1,23 @@
 import pyodbc
 from flask import Blueprint, request, jsonify
 from variables import *
+import requests
+
+# Create a Blueprint for the database routes
+db_blueprint = Blueprint('db_blueprint', __name__)
+
+def get_token():
+    response = requests.get('http://127.0.0.1:3000/api/user_token')
+    try:
+        print(jsonify(response.json()))
+    except: 
+        return False
+    return True
+
+@db_blueprint.before_request
+def verify_token():
+    if not get_token():
+        return jsonify({'error': 'Unauthorized'}), 401
 
 # Connect to the database. This will create a new file named 'mydatabase.db' if it doesn't exist.
 Driver = rf"Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:recruitment-app.database.windows.net,1433;Database=opt-recruitment-db;Uid={SQLUSER};Pwd={SQLPASS};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
@@ -19,8 +36,7 @@ cursor.execute('''
 conn.commit()
 conn.close()
 
-# Create a Blueprint for the database routes
-db_blueprint = Blueprint('db_blueprint', __name__)
+
 
 
 def get_db_connection():
