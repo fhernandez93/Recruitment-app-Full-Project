@@ -4,7 +4,6 @@ from flask import Flask, jsonify, redirect, render_template, request, session, u
 from flask_session import Session
 from flask_cors import CORS  # Import CORS
 from API_Module import *
-import cherrypy
 
 import variables
 
@@ -17,7 +16,7 @@ app.config.from_object(variables)
 Session(app)
 
 # Enable CORS
-CORS(app, supports_credentials=True, origins=["https://localhost:3000","https://localhost:3001"])
+CORS(app, supports_credentials=True, origins=["https://localhost:3000","https://localhost:8080","https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io"])
 
 auth = identity.web.Auth(
     session=session,
@@ -30,7 +29,8 @@ auth = identity.web.Auth(
 def login():
     auth_response = auth.log_in(
         scopes=variables.SCOPE,  # Have user consent to scopes during log-in
-        redirect_uri="https://opt-recruitment-app-web.azurewebsites.net/getAToken" #url_for("auth_response", _external=True)
+        # redirect_uri="https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io/getAToken" 
+        redirect_uri=url_for("auth_response", _external=True)
     )
     auth_url = auth_response.get("auth_uri")  
     return redirect(auth_url)
@@ -46,7 +46,7 @@ def auth_response():
 
 @app.route("/api/logout")
 def logout():
-    return redirect(auth.log_out("http://localhost:3000"))
+    return redirect(auth.log_out("/"))
 
 
 @app.route("/api/user")
@@ -61,9 +61,9 @@ def index():
     user = auth.get_user()
     if not user:
         return redirect(url_for("login"))
-    return redirect("http://localhost:3001")
+    return redirect("/api/call_downstream_api")
 
-@app.route("/call_downstream_api")
+@app.route("/api/call_downstream_api")
 def call_downstream_api():
     token = auth.get_token_for_user(variables.SCOPE)
     if "error" in token:
@@ -93,13 +93,5 @@ def get_token():
 
 
 if __name__ == "__main__":
-    
-
     app.run(host="0.0.0.0",port=3000)
-    cherrypy.config.update({'server.socket_host': '0.0.0.0',
-                        'server.socket_port': 3000,
-                        'engine.autoreload.on': False,
-                        'server.ssl_module':'builtin',
-                        'server.ssl_certificate':'crt',
-                        'server.ssl_private_key':'key'
-                        })
+    

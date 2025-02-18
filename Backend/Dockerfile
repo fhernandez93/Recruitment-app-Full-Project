@@ -2,21 +2,7 @@
 FROM python:3.12.8 AS backend
 
 WORKDIR /app
-COPY Backend/ /app
-
-# Build frontend React app
-FROM node:16.15.1 AS frontend
-WORKDIR /frontend
-COPY frontend/ .
-RUN yarn install && yarn run build
-
-# Install 'serve' to serve the React build
-
-# Final Image
-FROM python:3.12.8
-WORKDIR /app
-COPY --from=backend /app .
-COPY --from=frontend /frontend/dist ./frontend_build
+COPY . .
 
 ENV FLASK_ENV=production
 
@@ -34,18 +20,9 @@ RUN apt-get install -y unixodbc-dev
 RUN pip install -r requirements.txt
 RUN az login
 
-# Install dependencies
-RUN apt-get update && apt-get install -y gcc curl nginx
-
-# Setup Nginx
-COPY /default.conf /etc/nginx/conf.d/default.conf
-RUN rm -rf /usr/share/nginx/html/* && \
-    cp -r ./frontend_build/* /usr/share/nginx/html/
 
 # Expose the ports for backend and frontend
-EXPOSE 3000 3001
+EXPOSE 3000
 
-# Serve the React app on port 3001 and Flask app on port 5000
-CMD service nginx start && python server.py
-
-
+# Serve the React app on port 80 and Flask app on port 3000
+CMD ["python","server.py"]

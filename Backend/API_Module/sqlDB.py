@@ -6,18 +6,18 @@ import requests
 # Create a Blueprint for the database routes
 db_blueprint = Blueprint('db_blueprint', __name__)
 
-def get_token():
-    response = requests.get('http://127.0.0.1:3000/api/user_token')
-    try:
-        print(jsonify(response.json()))
-    except: 
-        return False
-    return True
+# def get_token():
+#     response = requests.get('localhost:8080/api/user_token')
+#     try:
+#         print(jsonify(response.json()))
+#     except: 
+#         return False
+#     return True
 
-@db_blueprint.before_request
-def verify_token():
-    if not get_token():
-        return jsonify({'error': 'Unauthorized'}), 401
+# @db_blueprint.before_request
+# def verify_token():
+#     if not get_token():
+#         return jsonify({'error': 'Unauthorized'}), 401
 
 # Connect to the database. This will create a new file named 'mydatabase.db' if it doesn't exist.
 Driver = rf"Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:recruitment-app.database.windows.net,1433;Database=opt-recruitment-db;Uid={SQLUSER};Pwd={SQLPASS};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
@@ -44,7 +44,7 @@ def get_db_connection():
     conn = pyodbc.connect(Driver)
     return conn
 
-@db_blueprint.route('/data/jobs', methods=['GET'])
+@db_blueprint.route('/api/data/jobs', methods=['GET'])
 def get_data():
     """Handle GET requests to fetch data from the database."""
     conn = get_db_connection()
@@ -61,7 +61,7 @@ def get_data():
     return jsonify(data)
 
 
-@db_blueprint.route('/data/jobs', methods=['POST'])
+@db_blueprint.route('/api/data/jobs', methods=['POST'])
 def insert_data():
     """Handle POST requests to insert data into the database."""
     data = request.json

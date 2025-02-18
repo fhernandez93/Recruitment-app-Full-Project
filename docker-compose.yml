@@ -1,18 +1,28 @@
-version: "3.8"
-
+# services:
+#   web:
+#     build: .
+#     ports:
+#       - "80:3000"
+#   backend:
+#     image: "optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest"
 services:
-  backend:
-    build: .
+  flask-backend:
+    image: optrecruitmentapp.azurecr.io/recruitment-app-optumus-backend:latest 
+    container_name: flask-backend
     ports:
       - "3000:3000"
-    depends_on:
-      - frontend
 
-  frontend:
-    image: node:16.15.1
-    working_dir: /frontend
-    volumes:
-      - ./frontend:/frontend
-    command: "yarn start"
+  react-frontend:
+    image: optrecruitmentapp.azurecr.io/recruitment-app-optumus-frontend:latest 
+    container_name: react-frontend
     ports:
-      - "3001:3000"
+      - "3001:80"  # Mapping external port 3001 to internal port 80
+
+  nginx:
+    image: optrecruitmentapp.azurecr.io/recruitment-app-optumus-nginx:latest 
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask-backend
+      - react-frontend
