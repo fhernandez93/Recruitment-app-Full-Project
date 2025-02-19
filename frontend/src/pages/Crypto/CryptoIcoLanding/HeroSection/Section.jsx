@@ -13,7 +13,7 @@ import {
 import axios from 'axios'
 import { Link } from "react-router-dom";
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io';
 
 //Import Countdown
 import Countdown from "react-countdown";
@@ -51,7 +51,7 @@ const Section = () => {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    axios.get(`api/data/jobs`)
+    axios.get(`api/data/jobs`,{withCredentials:true})
         .then(response => setMembers(response.data))
         .catch(error => console.error('Error fetching members:', error));
 }, []);

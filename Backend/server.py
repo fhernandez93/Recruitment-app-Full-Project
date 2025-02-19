@@ -16,7 +16,7 @@ app.config.from_object(variables)
 Session(app)
 
 # Enable CORS
-CORS(app, supports_credentials=True, origins=["https://localhost:3000","https://localhost:8080","https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io"])
+CORS(app, supports_credentials=True, origins=["https://localhost:3000","https://localhost:80","https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io","https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io","https://opt-recruitment-frontend.gentlemeadow-e1068751.westus2.azurecontainerapps.io"])
 
 auth = identity.web.Auth(
     session=session,
@@ -25,12 +25,15 @@ auth = identity.web.Auth(
     client_credential=app.config["CLIENT_SECRET"],
 )
 
+app.config['auth_var'] = auth
+
+
 @app.route("/api/login")
 def login():
     auth_response = auth.log_in(
         scopes=variables.SCOPE,  # Have user consent to scopes during log-in
-        # redirect_uri="https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io/getAToken" 
-        redirect_uri=url_for("auth_response", _external=True)
+        # redirect_uri=url_for("auth_response", _external=True)
+        redirect_uri = "https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io/getAToken"
     )
     auth_url = auth_response.get("auth_uri")  
     return redirect(auth_url)
@@ -46,7 +49,7 @@ def auth_response():
 
 @app.route("/api/logout")
 def logout():
-    return redirect(auth.log_out("/"))
+    return redirect(auth.log_out(url_for("login", _external=True)))
 
 
 @app.route("/api/user")
@@ -76,19 +79,7 @@ def call_downstream_api():
     ).json()
     return render_template('display.html', result=api_result)
 
-@app.route("/api/user_token")
-def get_token():
-    token = auth.get_token_for_user(variables.SCOPE)
-    if "error" in token:
-        return token
 
-    # Use access token to call downstream api
-    api_result = requests.get(
-        variables.ENDPOINT,
-        headers={'Authorization': 'Bearer ' + token['access_token']},
-        timeout=30,
-    ).json()
-    return jsonify(api_result)
 
 
 

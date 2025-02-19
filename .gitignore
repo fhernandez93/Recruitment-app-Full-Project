@@ -32,3 +32,4 @@ flask_session
 *.ipynb
 gits
 __pycache__
+Dockerfile_test.txt
