@@ -1,6 +1,7 @@
 import pyodbc
-from flask import Blueprint, current_app, url_for, jsonify
+from flask import Blueprint, current_app, url_for, jsonify,request
 from variables import *
+import requests
 
 # Create a Blueprint for the database routes
 db_blueprint = Blueprint('db_blueprint', __name__)
