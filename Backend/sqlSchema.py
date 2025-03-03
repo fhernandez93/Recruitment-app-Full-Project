@@ -32,11 +32,6 @@ cursor.execute('''
 
 
 cursor.execute('''
-    DROP TABLE [REC - Jobs]
-
-''')
-
-cursor.execute('''
     if not exists (select * from sysobjects where name='REC - Jobs' and xtype='U')
     create table [REC - Jobs] (
         ID INT IDENTITY(1,1) PRIMARY KEY,

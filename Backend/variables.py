@@ -4,6 +4,9 @@ from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
 load_dotenv()
 
+REDIRECT_PATH = "/getAToken"
+SESSION_TYPE = "filesystem"
+
 if not os.getenv("DEV"):
     keyVaultName = "keyRecruitmentApp"
     KVUri = f"https://{keyVaultName}.vault.azure.net"
@@ -16,10 +19,9 @@ if not os.getenv("DEV"):
     CLIENT_SECRET=str(client.get_secret("CLIENTSECRET").value)
     CLIENT_ID=str(client.get_secret("CLIENTID").value)
     AUTHORITY=str(client.get_secret("AUTHORITY").value)
-    REDIRECT_PATH = "/getAToken"
     ENDPOINT = 'https://graph.microsoft.com/v1.0/me'
     SCOPE = ["User.Read"]
-    SESSION_TYPE = "filesystem"
+    
 
 
 
