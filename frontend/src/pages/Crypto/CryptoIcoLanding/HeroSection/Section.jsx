@@ -15,6 +15,11 @@ import { Link } from "react-router-dom";
 
 axios.defaults.baseURL = 'https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io';
 
+
+if(import.meta.env.DEV){
+  axios.defaults.baseURL = 'http://localhost:3000';
+}
+
 //Import Countdown
 import Countdown from "react-countdown";
 
@@ -61,7 +66,7 @@ const Section = () => {
         <h1>Members</h1>
         <ul>
           {members.map(member => (
-            <li key={member.ID}>{member.name}</li>
+            <li key={member.ID}>{member['Role Name']}</li>
           ))}
         </ul>
       </div>

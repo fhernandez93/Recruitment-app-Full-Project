@@ -2,39 +2,32 @@ import pyodbc
 from flask import Blueprint, current_app, url_for, jsonify,request
 from variables import *
 import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # Create a Blueprint for the database routes
 db_blueprint = Blueprint('db_blueprint', __name__)
 
 @db_blueprint.before_request
 def verify_token():
-    user = current_app.config['auth_var'].get_user()
+    
+    if os.getenv("DEV"):
+        user = current_app.config["fake_token"]
+    else:
+        user = current_app.config['auth_var'].get_user()
 
     if not user:
         return jsonify({'error': 'Unauthorized'}), 401
 
-# Connect to the database. This will create a new file named 'mydatabase.db' if it doesn't exist.
-Driver = rf"Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:recruitment-app.database.windows.net,1433;Database=opt-recruitment-db;Uid={SQLUSER};Pwd={SQLPASS};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
-conn = pyodbc.connect(Driver)
-cursor = conn.cursor()
-
-#Create tables 
-cursor.execute('''
-    if not exists (select * from sysobjects where name='Customers' and xtype='U')
-    create table Customers (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        name varchar(max) NOT NULL
-    )
-''')
-
-conn.commit()
-conn.close()
-
-
 
 
 def get_db_connection():
-    Driver = rf"Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:recruitment-app.database.windows.net,1433;Database=opt-recruitment-db;Uid={SQLUSER};Pwd={SQLPASS};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    if os.environ.get("DEV"):
+        Driver = rf"DRIVER={{SQL Server}};Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;"
+    else:
+        Driver = rf"Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:recruitment-app.database.windows.net,1433;Database=opt-recruitment-db;Uid={SQLUSER};Pwd={SQLPASS};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+    
     conn = pyodbc.connect(Driver)
     return conn
 
@@ -44,7 +37,7 @@ def get_data():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    query = "SELECT * FROM Customers"  # Replace with your table name
+    query = "SELECT * FROM [REC - Jobs]"  # Replace with your table name
     cursor.execute(query)
     rows = cursor.fetchall()
 
@@ -59,7 +52,7 @@ def get_data():
 def insert_data():
     """Handle POST requests to insert data into the database."""
     data = request.json
-    name = data.get('name')
+    name = data.get('Role Name')
 
     if not name:
         return jsonify({"error": "Missing required fields"}), 400
@@ -67,7 +60,7 @@ def insert_data():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    query = "INSERT INTO Customers (name) VALUES (?)"  # Replace with your table columns
+    query = "INSERT INTO [REC - Jobs] ([Role Name]) VALUES (?)"  # Replace with your table columns
     cursor.execute(query, (name))
     conn.commit()
     
