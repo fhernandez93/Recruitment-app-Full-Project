@@ -42,7 +42,6 @@ const Storage = (props) => {
                       </h5>
                       <p className="text-muted text-truncate mb-0">176 Files</p>
                     </div>
-
                     <div className="ml-2">
                       <p className="text-muted">6 GB</p>
                     </div>

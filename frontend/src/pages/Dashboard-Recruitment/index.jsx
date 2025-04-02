@@ -8,8 +8,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import CardUser from "./card-user"
 import CardWelcome from "./card-welcome"
 import MiniWidget from "./mini-widget"
-import Earning from "./earning"
-import SalesAnalytics from "./sales-analytics"
+import PositionsFilled from "./positions-filled"
+import ChartAnalytics from "./chart-analytics"
 import TotalSellingProduct from "./total-selling-product"
 import Tasks from "./tasks"
 import ChatBox from "./chat-box"
@@ -43,14 +43,14 @@ const DashboardRecruitment = props => {
   ];
 
   //meta title
-  document.title="Recruitment App Dashboard | Optumus Suite ";
+  document.title="Recruitment Dashboard | Optumus Suite ";
   
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Dashboards" breadcrumbItem="Recruitment App" />
+          <Breadcrumbs title="" breadcrumbItem="Recruitment" />
 
           <Row>
             {/* welcome card */}
@@ -66,22 +66,12 @@ const DashboardRecruitment = props => {
 
           <Row>
             {/* earning */}
-            <Earning />
+            <PositionsFilled />
 
             {/* sales anytics */}
-            <SalesAnalytics />
+            <ChartAnalytics />
           </Row>
 
-          <Row>
-            {/* total selling product */}
-            <TotalSellingProduct />
-
-            {/* tasks */}
-            <Tasks />
-
-            {/* chat box */}
-            <ChatBox />
-          </Row>
         </Container>
       </div>
     </React.Fragment>

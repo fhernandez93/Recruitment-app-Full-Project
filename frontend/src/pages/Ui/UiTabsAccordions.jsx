@@ -1228,7 +1228,7 @@ function UiTabsAccordions(props) {
                           </button>
                         </h2>
 
-                        <Collapse isOpen={col1} className="accordion-collapse">
+                        <Collapse isOpen={true} className="accordion-collapse">
                           <div className="accordion-body">
                             <div className="text-muted">
                               <strong className="text-dark">
@@ -1263,7 +1263,7 @@ function UiTabsAccordions(props) {
                           </button>
                         </h2>
 
-                        <Collapse isOpen={col2} className="accordion-collapse">
+                        <Collapse isOpen={true} className="accordion-collapse">
                           <div className="accordion-body">
                             <div className="text-muted">
                               <strong className="text-dark">
@@ -1297,7 +1297,7 @@ function UiTabsAccordions(props) {
                             Accordion Item #3
                           </button>
                         </h2>
-                        <Collapse isOpen={col3} className="accordion-collapse">
+                        <Collapse isOpen={true} className="accordion-collapse">
                           <div className="accordion-body">
                             <div className="text-muted">
                               <strong className="text-dark">

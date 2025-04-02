@@ -13,12 +13,7 @@ import {
 import axios from 'axios'
 import { Link } from "react-router-dom";
 
-axios.defaults.baseURL = 'https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io';
-
-
-if(import.meta.env.DEV){
-  axios.defaults.baseURL = 'http://localhost:3000';
-}
+axios.defaults.baseURL = 'http://localhost:3000';
 
 //Import Countdown
 import Countdown from "react-countdown";
@@ -56,20 +51,20 @@ const Section = () => {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    axios.get(`api/data/jobs`,{withCredentials:true})
-        .then(response => setMembers(response.data))
+    axios.get(`/api/members`)
+        .then(response => setMembers(response.data.members))
         .catch(error => console.error('Error fetching members:', error));
 }, []);
   return (
     <React.Fragment>
-       <div>
-        <h1>Members</h1>
-        <ul>
-          {members.map(member => (
-            <li key={member.ID}>{member['Role Name']}</li>
-          ))}
-        </ul>
-      </div>
+        <div>
+            <h1>Members</h1>
+            <ul>
+                {members.map((member, index) => (
+                    <li key={index}>{member}</li>
+                ))}
+            </ul>
+        </div>
       <section className="section hero-section bg-ico-hero" id="home">
         <div className="bg-overlay bg-primary" />
         <Container>

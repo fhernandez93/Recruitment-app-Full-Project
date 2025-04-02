@@ -22,10 +22,10 @@ const BuySell = () => {
 
   return (
     <React.Fragment>
-      <Col xl="12">
+      <Col xl="4">
         <Card>
           <CardBody>
-            <h4 className="card-title mb-4">Candidate</h4>
+            <h4 className="card-title mb-4">Buy / Sell</h4>
 
             <Nav pills className="bg-light rounded" role="tablist">
               <NavItem>
@@ -35,7 +35,7 @@ const BuySell = () => {
                     setactiveTab("1");
                   }}
                 >
-                  Info
+                  Buy
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -45,7 +45,7 @@ const BuySell = () => {
                     setactiveTab("2");
                   }}
                 >
-                  More
+                  Sell
                 </NavLink>
               </NavItem>
             </Nav>
@@ -56,30 +56,64 @@ const BuySell = () => {
               style={{ minHeight: "340px" }}
             >
               <TabPane tabId="1">
-                
-                <FormGroup className="mb-3">
-                  <Label>Name :</Label>
-                  <Input type="text" className="form-control" />
-                </FormGroup>
-                <FormGroup className="mb-3">
-                  <Label>Email :</Label>
-                  <Input type="email" className="form-control" />
-                </FormGroup>
-                <FormGroup className="mb-3">
-                  <Label>Global Status:</Label>
-                  <select className="form-select">
-                    <option>Status 1</option>
-                    <option>Status 2</option>
-                  </select>
-                </FormGroup>
-                <FormGroup className="mb-3">
-                  <Label>Skills :</Label>
-                  <select className="form-select">
-                    <option>English</option>
-                    <option>Call Center</option>
-                  </select>
-                </FormGroup>
+                <div className="float-end ms-2">
+                  <h5 className="font-size-14">
+                    <i className="bx bx-wallet text-primary font-size-16 align-middle me-1"></i>{" "}
+                    $4235.23
+                  </h5>
+                </div>
+                <h5 className="font-size-14 mb-4">Buy Coin</h5>
 
+                <div>
+                  <FormGroup className="mb-3">
+                    <Label>Payment method :</Label>
+                    <select className="form-select">
+                      <option>Credit / Debit Card</option>
+                      <option>Paypal</option>
+                    </select>
+                  </FormGroup>
+
+                  <div>
+                    <Label>Add Amount :</Label>
+                    <InputGroup className="mb-3">
+
+                      <Label className="input-group-text">Amount</Label>
+                      <select
+                        defaultValue="1"
+                        className="form-select"
+                        style={{ maxWidth: "90px" }}
+                      >
+                        <option value="1" >
+                          BTC
+                        </option>
+                        <option value="2">ETH</option>
+                        <option value="3">LTC</option>
+                      </select>
+                      <Input type="text" className="form-control" />
+                    </InputGroup>
+
+                    <InputGroup className="mb-3">
+
+                      <Label className="input-group-text">Price</Label>
+                      <Input type="text" className="form-control" />
+                      <div className="input-group-append">
+                        <Label className="input-group-text">$</Label>
+                      </div>
+                    </InputGroup>
+
+                    <InputGroup className="mb-3">
+
+                      <Label className="input-group-text">Total</Label>
+                      <Input type="text" className="form-control" />
+                    </InputGroup>
+                  </div>
+
+                  <div className="text-center">
+                    <Button type="button" color="success" className="w-md">
+                      Buy Coin
+                    </Button>
+                  </div>
+                </div>
               </TabPane>
               <TabPane tabId="2">
                 <div className="float-end ms-2">

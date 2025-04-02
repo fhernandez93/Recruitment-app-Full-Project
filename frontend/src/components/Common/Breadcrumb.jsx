@@ -11,8 +11,13 @@ const Breadcrumb = props => {
           <h4 className="mb-0 font-size-18">{props.breadcrumbItem}</h4>
           <div className="page-title-right">
             <ol className="breadcrumb m-0">
+              {
+                props.rootTitle && <BreadcrumbItem>
+                  <Link to={props.rootLink || "#" }>{props.rootTitle}</Link>
+                </BreadcrumbItem>
+              }
               <BreadcrumbItem>
-                <Link to="#">{props.title}</Link>
+                <Link to={props.titleLink || "#" }>{props.title}</Link>
               </BreadcrumbItem>
               <BreadcrumbItem active>
                 <Link to="#">{props.breadcrumbItem}</Link>
@@ -27,7 +32,10 @@ const Breadcrumb = props => {
 
 Breadcrumb.propTypes = {
   breadcrumbItem: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
+  titleLink: PropTypes.string,
+  rootLink: PropTypes.string,
+  rootTitle: PropTypes.string
 }
 
 export default Breadcrumb

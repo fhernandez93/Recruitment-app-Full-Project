@@ -1,9 +1,9 @@
 .noti-icon .badge {
   left: 23px;
 }
-.mt-2 {
-  margin-top: 20px !important;
-}
+// .mt-2 {
+//   margin-top: 20px !important;
+// }
 
 .dataTables_filter,
 .dataTables_paginate {
@@ -52,4 +52,95 @@
 
 .sidebar-checkbox {
   padding: 0.5rem 4.5rem;
+}
+
+.slick-slider {
+  position: relative !important;
+}
+
+.slick-prev{
+  left: 0px !important;
+  top: 10px;
+}
+.slick-next {
+  right: 0px !important;
+  top: 10px;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #dfdfdf;
+}
+
+.custom-wrapper .accordion-item {
+  border-color: #e9e9e9 !important;
+}
+
+.custom-wrapper .accordion-button {
+  box-shadow: inset 0 -1px 0 rgb(233, 233, 233);
+}
+
+.custom-wrapper .accordion-button {
+  background: #fbfbfb;
+}
+
+.track-title, .track-add {
+  cursor: pointer;
+}
+
+.track-title:hover, .track-add:hover {
+  filter: brightness(1.3); /* Increase brightness by 30% */
+}
+
+.text-medium {
+  font-size: 14px;
+}
+
+.font-size-2-5rem {
+  font-size: 2.5rem;
+}
+
+.font-size-3rem {
+  font-size: 3rem;
+}
+
+// ===================================
+/* Make the select smaller */
+.select2-selection__control {
+  min-height: 30px !important;
+  height: 30px !important;
+  font-size: 12px !important;
+}
+
+.select2-selection__indicators {
+  height: 28px !important;
+}
+
+.select2-selection__value-container {
+  padding: 0px 8px !important;
+}
+
+.small-select .select2-selection__control {
+  height: 30px;
+  font-size: 12px;
+}
+.m-width-100 {
+  min-width: 100px;
+}
+.m-width-140 {
+  min-width: 140px;
+}
+
+.div-track-date input {
+  width: 115px;
+  height: 30px;
+  top: -6px;
+  position: relative;
+}
+
+.track-table td {
+  padding: 10px 0 0 0;
+}
+
+.track-decisions-top {
+  top: "-0.2rem"
 }

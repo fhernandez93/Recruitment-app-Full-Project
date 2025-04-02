@@ -45,7 +45,7 @@ const RoadMap = () => {
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                Start by selecting the position that interests you most. This is your first step toward finding your next great opportunity
+                                Full description of something here.
                                 </p>
                               </div>
                             </div>
@@ -68,7 +68,7 @@ const RoadMap = () => {
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                  The second step is to sign up and create your profile. This will help us learn more about you and match you with the right opportunities!
+                                  Full description of something here.
                                 </p>
                               </div>
                             </div>
@@ -91,7 +91,7 @@ const RoadMap = () => {
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                  In the third step, our hiring managers will review profiles and select the best match for the position. If you’re chosen, congratulations on your new role! 🎉
+                                  Full description of something here.
                                 </p>
                               </div>
                             </div>

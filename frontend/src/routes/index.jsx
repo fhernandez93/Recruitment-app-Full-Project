@@ -74,9 +74,15 @@ import EmailVerification2 from "../pages/AuthenticationInner/auth-email-verifica
 import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-verification"
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2"
 
+// // Recruitment
+import DashboardRecruitment from "../pages/Dashboard-Recruitment/index"
+import RecruitmentCandidateDirectory from "../pages/Recruitment/CandidateDirectory/index"
+import RecruitmentCandidateEdit from "../pages/Recruitment/EditCandidate"
+import RecruitmentCandidateView from "../pages/Recruitment/CandidateDirectory/CandidateView"
+import RecruitmentCandidateView2 from "../pages/Recruitment/CandidateDirectory/CandidateView2"
+
 // // Dashboard
 import Dashboard from "../pages/Dashboard/index"
-import DashboardRecruitment from "../pages/Dashboard-Recruitment/index"
 import DashboardSaas from "../pages/Dashboard-saas/index"
 import DashboardCrypto from "../pages/Dashboard-crypto/index"
 import Blog from "../pages/Dashboard-Blog/index"
@@ -184,7 +190,12 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 const authProtectedRoutes = [
   
   { path: "/dashboard", component: Dashboard },
-  { path: "/dashboard-recruitment", component: DashboardRecruitment },
+  { path: "/recruitment/", component: DashboardRecruitment },
+  { path: "/recruitment/candidate-directory", component: RecruitmentCandidateDirectory },
+  { path: "/recruitment/edit-candidate/:id", component: RecruitmentCandidateEdit },
+  { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView },
+  { path: "/recruitment/candidates", component: RecruitmentCandidateView2 },
+
   { path: "/dashboard-original", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
@@ -329,7 +340,7 @@ const authProtectedRoutes = [
 
 //   // this route should be at the end of all other routes
 //   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard-recruitment" /> },
+  { path: "/", exact: true, component: () => <Redirect to="/recruitment" /> },
 ]
 
 const publicRoutes = [

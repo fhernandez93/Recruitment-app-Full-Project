@@ -104,13 +104,16 @@ const SidebarContent = props => {
               <Link to="/#" className="">
                 <i className="bx bx-home-circle"></i>
                 <span className="badge rounded-pill bg-info float-end">
-                  01
+                  02
                 </span>
-                <span>{props.t("Recruitment App")}</span>
+                <span>{props.t("Recruitment")}</span>
               </Link>
               <ul className="sub-menu" aria-expanded="false">
                 <li>
-                  <Link to="/dashboard-recruitment">{props.t("Dashboard")}</Link>
+                  <Link to="/recruitment">{props.t("Dashboard")}</Link>
+                </li>
+                <li>
+                  <Link to="/recruitment/candidate-directory">{props.t("Candidate Directory")}</Link>
                 </li>
               </ul>
               <ul className="sub-menu" aria-expanded="false">

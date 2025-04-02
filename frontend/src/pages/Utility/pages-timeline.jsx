@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Row, Col, Card, CardBody, CardTitle } from "reactstrap"
+import BuySell from "/src/pages/Dashboard-crypto/buy-sell";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -10,48 +11,65 @@ const PagesTimeline = () => {
   const statuses = [
     {
       id: 1,
-      stausTitle: "Ordered",
+      stausTitle: "Final Interview",
       iconClass: "bx-copy-alt",
-      description: "New common language will be more simple than existing.",
+      description: "15 March. Final score: 5/10",
     },
     {
       id: 2,
-      stausTitle: "Packed",
-      iconClass: "bx-package",
+      stausTitle: "Pass on Candidate",
+      iconClass: "bx-x",
       description:
-        "To an English person, it will seem like simplified English existence.",
+        "15 March. Not good enough.",
+    },
+    
+  ];
+  const statuses2 = [
+    {
+      id: 1,
+      stausTitle: "Final Interview",
+      iconClass: "bx-copy-alt",
+      description: "20 March. Final score: 9/10",
+    },
+    {
+      id: 2,
+      stausTitle: "Offer Made",
+      iconClass: "bx-money",
+      description:
+        "25 March. Made an offer of $1",
     },
     {
       id: 3,
-      stausTitle: "Shipped",
-      iconClass: "bx-car",
+      stausTitle: "Offer Accepted",
+      iconClass: "bx-check",
       description:
-        "It will be as simple as occidental in fact it will be Cambridge",
+        "26 March. He accepted.",
     },
-    {
-      id: 4,
-      stausTitle: "Delivered",
-      iconClass: "bx-badge-check",
-      description:
-        "To an English person, it will seem like simplified English existence.",
-    },
+    
   ];
 
   //meta title
-  document.title = "Timeline | Optumus Suite ";
+  document.title = "View Candidate | Optumus Suite ";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Utility" breadcrumbItem="Timeline" />
+          <Breadcrumbs title="Utility" breadcrumbItem="Candidate: John Doe" />
 
           <Row>
+            <Col lg="2">
+                <BuySell />
+            </Col>
+            <Col lg="10">
+
+
+            <Row>
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Horizontal Timeline</CardTitle>
+                  <CardTitle className="mb-4">Global Track</CardTitle>
 
                   <div className="hori-timeline">
                     <div
@@ -67,18 +85,17 @@ const PagesTimeline = () => {
                             <div>
                               <div className="event-date">
                                 <div className="text-primary mb-1">
-                                  12 September
+                                  01 March
                                 </div>
-                                <h5 className="mb-4">First event</h5>
+                                <h5 className="mb-4">First Interview</h5>
                               </div>
                               <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
+                                <i className="bx bx-check h1 text-primary down-arrow-icon" />
                               </div>
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                  It will be as simple as occidental in fact it
-                                  will be Cambridge
+                                  The candidate has strong English skills.
                                 </p>
                               </div>
                             </div>
@@ -91,18 +108,17 @@ const PagesTimeline = () => {
                             <div>
                               <div className="event-date">
                                 <div className="text-primary mb-1">
-                                  06 October
+                                  10 March
                                 </div>
-                                <h5 className="mb-4">Second event</h5>
+                                <h5 className="mb-4">Second Interview</h5>
                               </div>
                               <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
+                                <i className="bx bx-check h1 text-primary down-arrow-icon" />
                               </div>
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                  To an English person, it will seem like
-                                  simplified English existence.
+                                  The candidate has experience in call centers.
                                 </p>
                               </div>
                             </div>
@@ -115,18 +131,17 @@ const PagesTimeline = () => {
                             <div>
                               <div className="event-date">
                                 <div className="text-primary mb-1">
-                                  25 October
+                                  15 March
                                 </div>
-                                <h5 className="mb-4">Third event</h5>
+                                <h5 className="mb-4">Third Interview</h5>
                               </div>
                               <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
+                                <i className="bx bx-check h1 text-primary down-arrow-icon" />
                               </div>
 
                               <div className="mt-3 px-3">
                                 <p className="text-muted">
-                                  For science, music, sport, etc, Europe uses
-                                  the same vocabulary.
+                                  Technical exam score: 8/10
                                 </p>
                               </div>
                             </div>
@@ -134,106 +149,7 @@ const PagesTimeline = () => {
                         </>
                       ) : null}
 
-                      {step2 ? (
-                        <>
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  04 November
-                                </div>
-                                <h5 className="mb-4">Fourth event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
 
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  New common language will be more simple than
-                                  existing.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  19 November
-                                </div>
-                                <h5 className="mb-4">Sixth event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
-
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  It will be as simple as occidental in fact it
-                                  will be Cambridge
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  21 December
-                                </div>
-                                <h5 className="mb-4">Seventh event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
-
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  To an English person, it will seem like
-                                  simplified English existence.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ) : null}
-
-                      <div className="owl-nav" style={{ textAlign: "center" }}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setStep1(true)
-                            setStep2(false)
-                          }}
-                          className="border-0"
-                          disabled={step1}
-                        >
-                          <i className="mdi mdi-chevron-left" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setStep1(false)
-                            setStep2(true)
-                          }}
-                          className="border-0"
-                          disabled={step2}
-                        >
-                          <i className="mdi mdi-chevron-right" />
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </CardBody>
@@ -241,11 +157,15 @@ const PagesTimeline = () => {
             </Col>
           </Row>
 
+          <div className="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 className="mb-0 font-size-18">Positions</h4>  
+          </div>
+
           <Row>
-            <Col lg="12">
+            <Col lg="4">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-5">Vertical Timeline</CardTitle>
+                  <CardTitle className="mb-5">Power BI Developer Track</CardTitle>
                   <div >
                     <ul className="verti-timeline list-unstyled">
                       {/* Render Horizontal Timeline Events */}
@@ -284,7 +204,98 @@ const PagesTimeline = () => {
                 </CardBody>
               </Card>
             </Col>
+            <Col lg="4">
+              <Card>
+                <CardBody>
+                  <CardTitle className="mb-5">Power Apps Developer Track</CardTitle>
+                  <div >
+                    <ul className="verti-timeline list-unstyled">
+                      {/* Render Horizontal Timeline Events */}
+                      {statuses.map((status, key) => (
+                        <li key={key} className="event-list">
+                          <div className="event-timeline-dot">
+                            <i
+                              className={
+                                status.id === 3
+                                  ? "bx bx-right-arrow-circle bx-fade-right"
+                                  : "bx bx-right-arrow-circle"
+                              }
+                            />
+                          </div>
+                          <div className="d-flex">
+                            <div className="me-3">
+                              <i
+                                className={
+                                  "bx " + status.iconClass + " h2 text-primary"
+                                }
+                              />
+                            </div>
+                            <div className="flex-grow-1">
+                              <div>
+                                <h5>{status.stausTitle}</h5>
+                                <p className="text-muted">
+                                  {status.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col lg="4">
+              <Card>
+                <CardBody>
+                  <CardTitle className="mb-5">Power Apps Developer Track</CardTitle>
+                  <div >
+                    <ul className="verti-timeline list-unstyled">
+                      {/* Render Horizontal Timeline Events */}
+                      {statuses2.map((status, key) => (
+                        <li key={key} className="event-list">
+                          <div className="event-timeline-dot">
+                            <i
+                              className={
+                                status.id === 3
+                                  ? "bx bx-right-arrow-circle bx-fade-right"
+                                  : "bx bx-right-arrow-circle"
+                              }
+                            />
+                          </div>
+                          <div className="d-flex">
+                            <div className="me-3">
+                              <i
+                                className={
+                                  "bx " + status.iconClass + " h2 text-primary"
+                                }
+                              />
+                            </div>
+                            <div className="flex-grow-1">
+                              <div>
+                                <h5>{status.stausTitle}</h5>
+                                <p className="text-muted">
+                                  {status.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
           </Row>
+
+
+
+
+            </Col>
+          </Row>
+          
         </div>
       </div>
     </React.Fragment>
