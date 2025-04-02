@@ -16,11 +16,15 @@ if not os.getenv("DEV"):
     SQLUSER=str(client.get_secret("SQLUSER").value)
     SQLPASS=str(client.get_secret("SQLPASS").value)
     KEY_VAULT_NAME=str(client.get_secret("KEYVAULTNAME").value)
-    CLIENT_SECRET=str(client.get_secret("CLIENTSECRET").value)
-    CLIENT_ID=str(client.get_secret("CLIENTID").value)
-    AUTHORITY=str(client.get_secret("AUTHORITY").value)
+    # CLIENT_SECRET=str(client.get_secret("CLIENTSECRET").value)
+    # CLIENT_ID=str(client.get_secret("CLIENTID").value)
+    # AUTHORITY=str(client.get_secret("AUTHORITY").value)
+    CLIENT_SECRET=os.getenv("CLIENT_SECRET")
+    CLIENT_ID=os.getenv("CLIENT_ID")
+    AUTHORITY=os.getenv("AUTHORITY")
     ENDPOINT = 'https://graph.microsoft.com/v1.0/me'
-    SCOPE = ["User.Read"]
+    SCOPE = ["https://graph.microsoft.com/.default"]
+
     
 
 
