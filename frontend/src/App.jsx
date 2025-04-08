@@ -19,28 +19,6 @@ import NonAuthLayout from "./components/NonAuthLayout"
 import "./assets/scss/theme.scss"
 import "./assets/scss/custom.scss"
 
-// Import Firebase Configuration file
-// import { initFirebaseBackend } from "./helpers/firebase_helper"
-
-import fakeBackend from "/src/helpers/AuthType/fakeBackend";
-
-// Activating fake backend
-fakeBackend();
-
-// const firebaseConfig = {
-//   apiKey: import.meta.env.VITE_APP_APIKEY,
-//   authDomain: import.meta.env.VITE_APP_AUTHDOMAIN,
-//   databaseURL: import.meta.env.VITE_APP_DATABASEURL,
-//   projectId: import.meta.env.VITE_APP_PROJECTID,
-//   storageBucket: import.meta.env.VITE_APP_STORAGEBUCKET,
-//   messagingSenderId: import.meta.env.VITE_APP_MESSAGINGSENDERID,
-//   appId: import.meta.env.VITE_APP_APPID,
-//   measurementId: import.meta.env.VITE_APP_MEASUREMENTID,
-// };
-
-// init firebase backend
-// initFirebaseBackend(firebaseConfig)
-
 const App = props => {
 
   function getLayout() {
@@ -59,31 +37,51 @@ const App = props => {
   const Layout = getLayout()
   return (
     <React.Fragment>
-      <Router>
-        <Switch>
-          {publicRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={NonAuthLayout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={false}
-              exact
-            />
-          ))}
+        <Router>
+          <Switch>
 
-          {authProtectedRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={Layout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={true}
-              exact
-            />
-          ))}
-        </Switch>
-      </Router>
+            {/* { user ? (
+              <Layout>
+                <div {...props} />
+              </Layout>
+            ) : ( 
+              <Layout>
+                <div 
+                  path="/login"
+                  layout={NonAuthLayout}
+                  component={Login}
+                  isAuthProtected={false}
+                  exact
+                />
+              </Layout>
+              // <Redirect
+              //   to={{ pathname: "/login", state: { from: props.location } }}
+              // />
+            )} */}
+
+            {publicRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={NonAuthLayout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+                exact
+              />
+            ))}
+
+            {authProtectedRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                exact
+              />
+            ))}
+          </Switch>
+        </Router>
     </React.Fragment>
   )
 }

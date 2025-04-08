@@ -13,6 +13,8 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.8.0",
+    "@azure/msal-react": "^3.0.7",
     "@babel/runtime": "^7.17.9",
     "@ckeditor/ckeditor5-build-classic": "^31.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",

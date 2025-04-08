@@ -22,6 +22,10 @@ const ProfileMenu = (props) => {
 
   const [username, setusername] = useState("Admin");
 
+  const handleLogoutRedirect = () => {
+    window.location.href = import.meta.env.VITE_APP_BACKEND_URL + '/api/logout';
+  };
+
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       if (import.meta.env.VITE_APP_DEFAULTAUTH === "firebase") {
@@ -69,7 +73,7 @@ const ProfileMenu = (props) => {
             {props.t("Settings")}
           </DropdownItem>
           <div className="dropdown-divider" />
-          <Link to="/logout" className="dropdown-item">
+          <Link onClick={()=> handleLogoutRedirect()} className="dropdown-item">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{props.t("Logout")}</span>
           </Link>

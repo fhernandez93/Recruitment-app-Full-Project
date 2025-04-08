@@ -13,7 +13,7 @@ import {
 import axios from 'axios'
 import { Link } from "react-router-dom";
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 //Import Countdown
 import Countdown from "react-countdown";

@@ -30,7 +30,7 @@ function* loginUser({ payload: { user, history } }) {
       });
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
-    } else if (import.meta.env.VITE_APP_DEFAULTAUTH === "fake") {
+    } else if (import.meta.env.VITE_APP_DEFAULTAUTH === "fakeOriginal") {
 
       const response = yield call(postFakeLogin, {
         email: user.email,
@@ -38,6 +38,19 @@ function* loginUser({ payload: { user, history } }) {
       });
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
+    // *******************************************************************************************************
+    // This is for the DEVELOPMENT purpose only.
+    // *******************************************************************************************************
+    } else if (import.meta.env.VITE_APP_DEFAULTAUTH === "fake") {
+      try {
+        const response = yield call(postFakeLogin, { email: user.email, password: user.password });
+        console.log("Response:", response); // Add this line
+        localStorage.setItem("authUser", JSON.stringify(response));
+        yield put(loginSuccess(response));
+        history.push("/dashboard");
+      } catch (error) {
+        yield put(apiError(error));
+      }
     }
     history.push("/dashboard");
   } catch (error) {

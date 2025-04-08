@@ -24,3 +24,7 @@ Documentation
 *.sln
 *.sw?
 .vercel
+
+.env
+.ev.development
+.env.production

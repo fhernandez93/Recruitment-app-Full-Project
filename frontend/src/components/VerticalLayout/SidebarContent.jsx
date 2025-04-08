@@ -115,6 +115,9 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/recruitment/candidate-directory">{props.t("Candidate Directory")}</Link>
                 </li>
+                <li>
+                  <Link to="/recruitment/candidates">{props.t("View Candidate")}</Link>
+                </li>
               </ul>
               <ul className="sub-menu" aria-expanded="false">
                 <li>
@@ -129,21 +132,24 @@ const SidebarContent = props => {
             </li>
           </ul>
 
-          <div className="form-check sidebar-checkbox mb-2">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="newestOnTop"
-              value={demoMenu}
-              onChange={handleChange}
-            />
-            <Label
-              className="form-check-label"
-              htmlFor="newestOnTop"
-            >
-              {props.t("View all")}{" "}
-            </Label>
-          </div>
+          {
+            (import.meta.env.VITE_APP_DEV.toLowerCase() === "true") &&
+            <div className="form-check sidebar-checkbox mb-2">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="newestOnTop"
+                value={demoMenu}
+                onChange={handleChange}
+              />
+              <Label
+                className="form-check-label"
+                htmlFor="newestOnTop"
+              >
+                {props.t("View all")}{" "}
+              </Label>
+            </div>
+          }
           
           <ul className={`${demoMenu || 'd-none'} metismenu list-unstyled`} id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
