@@ -19,6 +19,7 @@ if not os.getenv("DEV"):
     CLIENT_SECRET=str(client.get_secret("CLIENTSECRET").value)
     CLIENT_ID=str(client.get_secret("CLIENTID").value)
     AUTHORITY=str(client.get_secret("AUTHORITY").value)
+    
     ENDPOINT = 'https://graph.microsoft.com/v1.0/me'
     SCOPE = ["https://graph.microsoft.com/.default"]
 

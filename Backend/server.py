@@ -17,8 +17,10 @@ app.register_blueprint(db_blueprint)
 app.config.from_object(variables)
 Session(app)
 
+back_end_url=os.getenv("BACKEND_URL")
+FRONT_end_url=os.getenv("FRONTEND_URL")
 # Enable CORS
-CORS(app, supports_credentials=True, origins=["http://localhost:3001","https://localhost:3000","https://localhost:80","https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io","https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io","https://opt-recruitment-frontend.gentlemeadow-e1068751.westus2.azurecontainerapps.io"])
+CORS(app, supports_credentials=True, origins=[FRONT_end_url,back_end_url,"http://localhost"])
 
 if not os.getenv("DEV"):
     auth = identity.web.Auth(
@@ -62,8 +64,7 @@ def login():
     else:
         auth_response = auth.log_in(
             scopes=variables.SCOPE,  # Have user consent to scopes during log-in
-            redirect_uri=url_for("auth_response", _external=True)
-            # redirect_uri = "https://opt-recuitement-backend.gentlemeadow-e1068751.westus2.azurecontainerapps.io/getAToken"
+            redirect_uri=rf"{back_end_url}/getAToken"
         )
     auth_url = auth_response.get("auth_uri")  
     return redirect(auth_url)
@@ -81,7 +82,7 @@ def auth_response():
 def logout():
     if os.getenv("DEV"):
         app.config['fake_token'] = None
-        return redirect("http://localhost:3001")
+        return redirect(FRONT_end_url)
 
     return redirect(auth.log_out(url_for("login", _external=True)))
 
@@ -103,13 +104,13 @@ def index():
         if not app.config['fake_token']:
             return redirect(url_for("login"))
         else:
-            return redirect("http://localhost:3001")
+            return redirect(FRONT_end_url)
     
     user = auth.get_user()
     if not user:
         return redirect(url_for("login"))
-    # return redirect("https://opt-recruitment-full.gentlemeadow-e1068751.westus2.azurecontainerapps.io")
-    return redirect(url_for("call_downstream_api"))
+    
+    return redirect(FRONT_end_url)
 
 @app.route("/api/call_downstream_api")
 def call_downstream_api():
@@ -282,8 +283,5 @@ def update_event(event_id):
 
 ######################################################################################
 if __name__ == "__main__":
-    if os.getenv("DEV"):
-        app.run(host="localhost",port=3000)
-    else:
-        app.run(host="0.0.0.0",port=3000)
+    app.run(host="0.0.0.0",port=3000)
     
