@@ -39,26 +39,6 @@ const App = props => {
     <React.Fragment>
         <Router>
           <Switch>
-
-            {/* { user ? (
-              <Layout>
-                <div {...props} />
-              </Layout>
-            ) : ( 
-              <Layout>
-                <div 
-                  path="/login"
-                  layout={NonAuthLayout}
-                  component={Login}
-                  isAuthProtected={false}
-                  exact
-                />
-              </Layout>
-              // <Redirect
-              //   to={{ pathname: "/login", state: { from: props.location } }}
-              // />
-            )} */}
-
             {publicRoutes.map((route, idx) => (
               <Authmiddleware
                 path={route.path}
