@@ -6,7 +6,6 @@ from flask_cors import CORS  # Import CORS
 from API_Module import *
 from msal import ConfidentialClientApplication
 
-
 import variables
 
 

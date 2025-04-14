@@ -12,33 +12,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Test Azure Login
+      - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # - name: Azure Login with Service Principal
-      #   run: |
-      #     az login --service-principal \
-      #       -u ${{ secrets.CLIENT_ID }} \
-      #       -p ${{ secrets.CLIENT_SECRET }} \
-      #       --tenant ${{ secrets.TENANT_ID }}
-
-      # - name: Log in to Azure Container Registry
-      #   run: |
-      #     az acr login --name ${{ secrets.AZURE_ACR_NAME }}
+      
+      - name: Log in to Azure Container Registry
+        run: |
+          az acr login --name ${{ secrets.AZURE_ACR_NAME }}
 
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Build and push Docker image
-#         run: |
-#           az login
-#           az acr login --name optrecruitmentapp
-#           docker buildx build --platform=linux/amd64 -t optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest .   
-#           docker push optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest   
+      - name: Build and push Docker image
+        run: ls
+        # run: |
+        #   docker buildx build --platform=linux/amd64 -t optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest .   
+        #   docker push optrecruitmentapp.azurecr.io/recruitment-app-optumus:latest   
 
 #       - name: Deploy to Azure Web App
 #         uses: azure/webapps-deploy@v2
