@@ -32,7 +32,7 @@ const Authmiddleware = ({
 
   // Wait until either data or error is known
   if (loading || (!data && !error)) {
-    return <Layout>Loading...</Layout>;
+    return <></>;
   }
 
   // If the route is protected and no user data is available, redirect to login

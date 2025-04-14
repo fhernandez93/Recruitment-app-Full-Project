@@ -15,9 +15,15 @@ import VerticalLayout from "./components/VerticalLayout/"
 import HorizontalLayout from "./components/HorizontalLayout/"
 import NonAuthLayout from "./components/NonAuthLayout"
 
+// Fake Backend
+import fakeBackend from "/src/helpers/AuthType/fakeBackend";
+
 // Import scss
 import "./assets/scss/theme.scss"
 import "./assets/scss/custom.scss"
+
+// Activating fake backend
+fakeBackend();
 
 const App = props => {
 
