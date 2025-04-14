@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from "prop-types"
-import { Route, Redirect } from "react-router-dom"
-import axios from "axios";
-import { fetchUser } from "../store/actions";
+import React, { useEffect } from 'react';
+import PropTypes from "prop-types";
+import { Route, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchUser } from "../store/actions";
 import Login from '../pages/Authentication/Login';
 
 const Authmiddleware = ({
@@ -13,71 +12,56 @@ const Authmiddleware = ({
   ...rest
 }) => {
 
-  // // REDUX BEGINS
-  // const dispatch = useDispatch();
-  // const { user, loading } = useSelector(state => state.user);
-  
-  // useEffect(() => {
-  //   dispatch(fetchUser());
-  // }, [dispatch]);
-  // // REDUX ENDS
-
-  // FETCH BEGINS
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // REDUX BEGINS
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector(state => state.User);
 
   useEffect(() => {
-    if (loading) {  // Only fetch if we're in loading state
-      const fetchUser = async () => {
-        try {
-          axios.defaults.baseURL = import.meta.env.VITE_APP_BACKEND_URL;
-          const response = await axios.get('/api/user', { withCredentials: true });
-          setUser(response.data);
-        } catch (error) {
-          console.error('Error fetching user:', error);
-          setUser(null);  // Explicitly set user to null on error
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchUser();
+    // Fetch user data only if it's not already available and not loading
+    if (!data && !loading) {
+      dispatch(fetchUser());
+      console.log("Fetching user data...");
     }
-  }, []);  // Add loading as dependency
 
-  if (loading) {
-    return <Layout>...</Layout>;
+    if (data) {
+      console.log("User data fetched:", data);
+    }
+
+  }, [data]); // Dependencies to ensure effect runs correctly
+  // REDUX ENDS
+
+  // Wait until either data or error is known
+  if (loading || (!data && !error)) {
+    return <></>;
   }
 
+  // If the route is protected and no user data is available, redirect to login
+  if (isAuthProtected && (!data || error)) {
+    return (
+      <Redirect
+        to={{ pathname: "/login", state: { from: rest.location } }}
+      />
+    );
+  }
+
+  // Render the protected route component if data is available
   return (
     <Route
       {...rest}
-      render={props => {
-
-        if (isAuthProtected && !user) {
-          return (
-            // <Login {...props} />
-            <Redirect
-              to={{ pathname: "/login", state: { from: props.location } }}
-            />
-          )
-        }
-
-        return (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )
-
-      }}
+      render={props => (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      )}
     />
-  )
-}
+  );
+};
 
 Authmiddleware.propTypes = {
   isAuthProtected: PropTypes.bool,
   component: PropTypes.any,
   location: PropTypes.object,
-  layout: PropTypes.any, 
-}
+  layout: PropTypes.any,
+};
 
 export default Authmiddleware;
