@@ -73,7 +73,7 @@ const ProfileMenu = (props) => {
             {props.t("Settings")}
           </DropdownItem>
           <div className="dropdown-divider" />
-          <Link onClick={()=> handleLogoutRedirect()} className="dropdown-item">
+          <Link to="#" onClick={()=> handleLogoutRedirect()} className="dropdown-item">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{props.t("Logout")}</span>
           </Link>
