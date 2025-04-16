@@ -168,7 +168,7 @@ const CandidateSideBar = () => {
               </Label>
             </Col>
             <Col md={7}>
-              <RatingTooltip
+              {/* <RatingTooltip
                 max={5}
                 onChange={rate => {
                   setRate(rate);
@@ -185,7 +185,7 @@ const CandidateSideBar = () => {
                     // style={starStyle}
                   />
                 }
-              />
+              /> */}
             </Col>
             <Col md={12} className="mt-3">
               <Label className="form-label">Education</Label>
