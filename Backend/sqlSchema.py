@@ -11,6 +11,59 @@ else:
 conn = pyodbc.connect(Driver)
 cursor = conn.cursor()
 
+#Luis Tables ####################
+cursor.execute('''
+    if not exists (select * from sysobjects where name='GlobalCandidate' and xtype='U')
+    create table [GlobalCandidate] (
+        CandidateID INT IDENTITY(1,1) PRIMARY KEY,
+        CandidateName NVARCHAR(255) NOT NULL,
+        DateOfBirth DATE,
+        GlobalStatusID INT,                    -- FK - GlobalStatus
+        EnglishCertificationID INT,           -- FK - EnglishCertification
+        EnglishRating INT,
+        EducationLevelID INT,                      -- FK - EducationLevelID
+        Skills NVARCHAR(MAX),
+        WorkHistory NVARCHAR(MAX),
+        CandidateNotes NVARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE()
+    )
+''')
+
+cursor.execute('''
+    if not exists (select * from sysobjects where name='EnglishCertification' and xtype='U')
+    create table [EnglishCertification] (
+        CertificationID INT IDENTITY(1,1) PRIMARY KEY,
+        Certification NVARCHAR(MAX),
+        Comments NVARCHAR(MAX),
+        Active INT,
+    )
+''')
+
+cursor.execute('''
+    if not exists (select * from sysobjects where name='GlobalStatus' and xtype='U')
+    create table [GlobalStatus] (
+        StatusID INT IDENTITY(1,1) PRIMARY KEY,
+        Status NVARCHAR(MAX),
+        Comments NVARCHAR(MAX),
+        Active INT,
+    )
+''')
+
+cursor.execute('''
+    if not exists (select * from sysobjects where name='EducationLevel' and xtype='U')
+    create table [EducationLevel] (
+        EducationLevelID INT IDENTITY(1,1) PRIMARY KEY,
+        EducationLevel NVARCHAR(MAX),
+        Comments NVARCHAR(MAX),
+        Active INT,
+    )
+''')
+
+
+
+#################################
+
 #Create tables 
 cursor.execute('''
     if not exists (select * from sysobjects where name='REC - Interviews' and xtype='U')
