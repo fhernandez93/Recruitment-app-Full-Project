@@ -20,11 +20,11 @@ const Authmiddleware = ({
     // Fetch user data only if it's not already available and not loading
     if (!data && !loading) {
       dispatch(fetchUser());
-      console.log("Fetching user data...");
+      // console.log("Fetching user data...");
     }
 
     if (data) {
-      console.log("User data fetched:", data);
+      // console.log("User data fetched:", data);
     }
 
   }, [data]); // Dependencies to ensure effect runs correctly

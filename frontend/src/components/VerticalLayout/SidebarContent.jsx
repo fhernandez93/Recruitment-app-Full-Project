@@ -104,7 +104,7 @@ const SidebarContent = props => {
               <Link to="/#" className="">
                 <i className="bx bx-home-circle"></i>
                 <span className="badge rounded-pill bg-info float-end">
-                  02
+                  03
                 </span>
                 <span>{props.t("Recruitment")}</span>
               </Link>
