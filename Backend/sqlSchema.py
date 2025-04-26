@@ -16,12 +16,14 @@ cursor.execute('''
     if not exists (select * from sysobjects where name='GlobalCandidate' and xtype='U')
     create table [GlobalCandidate] (
         CandidateID INT IDENTITY(1,1) PRIMARY KEY,
-        CandidateName NVARCHAR(255) NOT NULL,
+        CandidateFirstName NVARCHAR(255) NOT NULL,
+        CandidateLastName NVARCHAR(255) NOT NULL,
         DateOfBirth DATE,
         GlobalStatusID INT,                    -- FK - GlobalStatus
         EnglishCertificationID INT,           -- FK - EnglishCertification
         EnglishRating INT,
         EducationLevelID INT,                      -- FK - EducationLevelID
+        EducationNotes NVARCHAR(MAX),
         Skills NVARCHAR(MAX),
         WorkHistory NVARCHAR(MAX),
         CandidateNotes NVARCHAR(MAX),

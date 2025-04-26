@@ -26,6 +26,8 @@ const CandidateSideBar = (props) => {
 
   const [initialValues, setInitialValues] = useState(null);
   const [selectedGroup, setselectedGroup] = useState(null);
+  const [englishCertificationList, setEnglishCertificationList] = useState([]);
+  const [globalStatusList, setGlobalStatusList] = useState([]);
   const [rate, setRate] = useState("");
   const ref = React.createRef();
 
@@ -40,32 +42,77 @@ const CandidateSideBar = (props) => {
   };
 
   const validationSchema = Yup.object({
-    id: Yup.number().required().positive().integer(),
-    firstName: Yup.string().max(100).required(),
-    lastName: Yup.string().max(100).required(),
-    status: Yup.number().required().positive().integer(),
-    englishCertification: Yup.number().positive().integer(),
-    englishRating: Yup.number().positive().integer(),
-    education: Yup.string().max(2500),
-    skills: Yup.string().max(2500),
-    workHistory: Yup.string().max(2500),
-    candidateNotes: Yup.string().max(2500),
+    CandidateID: Yup.number().required().positive().integer(),
+    CandidateFirstName: Yup.string().max(250).required(),
+    CandidateLastName: Yup.string().max(250).required(),
+    GlobalStatusID: Yup.number().required().positive().integer(),
+    EnglishCertificationID: Yup.number().positive().integer(),
+    EnglishRating: Yup.number().positive().integer(),
+    EducationNotes: Yup.string().max(2500),
+    Skills: Yup.string().max(2500),
+    WorkHistory: Yup.string().max(2500),
+    CandidateNotes: Yup.string().max(2500),
   });
+  
+  useEffect(() => {
+    const fetchGlobalStatusList = async () => {
+      try {
+        const response = await axios.get(`api/global-statuses`);
+        const data = response.data;
+  
+        setGlobalStatusList(
+          data.map(stat => ({
+            label: stat.Status,
+            value: stat.StatusID,
+          }))
+        );
+      } catch (error) {
+        toastr.error("Failed to load the list of Status.");
+      }
+    };
+  
+    fetchGlobalStatusList();
+  }, []);
 
   useEffect(() => {
-    // fetchCandidate().then(setInitialValues);
-    setInitialValues({
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      status: "2",
-      englishCertification: "2",
-      englishRating: "4",
-      education: "Test Education",
-      skills: "Test Skills",
-      workHistory: "Test Work History",
-      candidateNotes: "Test Candidate Notes",
-    })
+    const fetchEnglishCertifications = async () => {
+      try {
+        const response = await axios.get(`api/english-certifications`);
+        const data = response.data;
+  
+        setEnglishCertificationList(
+          data.map(cert => ({
+            label: cert.Certification,
+            value: cert.CertificationID,
+          }))        
+        );
+      } catch (error) {
+        toastr.error("Failed to load English Certifications.");
+      }
+    };
+  
+    fetchEnglishCertifications();
+  }, []);
+  
+  
+  useEffect(() => {
+    const fetchGlobalCandidate = async () => {
+      try {
+        const response = await axios.get(`api/global-candidates/1`);
+        const data = response.data;
+  
+        setInitialValues(
+          data.map(candidate => ({
+            label: candidate.candidateification,
+            value: candidate.candidateificationID,
+          }))        
+        );
+      } catch (error) {
+        toastr.error("Failed to load the information of the candidate.");
+      }
+    };
+  
+    fetchGlobalCandidate();
   }, [])
 
   const CustomPrevArrow = () => {
@@ -96,25 +143,7 @@ const CandidateSideBar = (props) => {
   const handleSelectGroup = (selectedGroup) => {
     setselectedGroup(selectedGroup)
   }
-  const statusList = {
-    label: "Status",
-    options: [
-      { label: "Future Potential", value: "1" },
-      { label: "No Future Potential", value: "2" },
-      { label: "Open Interviews", value: "3" },
-      { label: "Hired", value: "4" }
-    ]
-  }
-  const englishCertificationList =  {
-    label: "English Certification",
-    options: [
-      { label: "None", value: "1" },
-      { label: "TOEFL", value: "2" },
-      { label: "IELTS", value: "3" },
-      { label: "Cambridge", value: "4" },
-    ]
-  }
-
+  
   return (
     <React.Fragment>
       { initialValues ? 
@@ -217,24 +246,22 @@ const CandidateSideBar = (props) => {
                               </Col>
                               <Col sm={8}>
                                 <Select
-                                  options={statusList.options}
+                                  options={globalStatusList}
                                   classNamePrefix="select2-selection"
-                                  name="status"
-                                  value={statusList.options.find(
-                                    opt => opt.value === values.status
+                                  name="globalStatus"
+                                  value={globalStatusList.find(
+                                    stat => stat.value === values.globalStatus
                                   )}
                                   onChange={selectedOption => {
                                     handleChange({
                                       target: {
-                                        name: "status",
+                                        name: "globalStatus",
                                         value: selectedOption.value,
                                       },
                                     });
                                   }}
                                   onBlur={handleBlur}
                                 />
-
-                                
                               </Col>
                             </Row>
                           </Col>
@@ -265,11 +292,11 @@ const CandidateSideBar = (props) => {
                           </Col>
                           <Col md={7}>
                             <Select
-                              options={englishCertificationList.options}
+                              options={englishCertificationList}
                               classNamePrefix="select2-selection"
                               name="englishCertification"
-                              value={englishCertificationList.options.find(
-                                opt => opt.value === values.englishCertification
+                              value={englishCertificationList.find(
+                                cert => cert.value === values.englishCertification
                               )}
                               onChange={selectedOption => {
                                 handleChange({
@@ -366,7 +393,10 @@ const CandidateSideBar = (props) => {
               }
             }
           </Formik>
-        ) :  <div>Loading...</div>
+        ) :  
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
       }
     </React.Fragment>
   )

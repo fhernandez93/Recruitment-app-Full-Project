@@ -73,8 +73,8 @@ def insert_data():
 # Whitelist of allowed table names to prevent SQL injection
 ALLOWED_TABLES = {
     'global-candidates': '[GlobalCandidate]',
-    'global-statuses':'[EnglishCertification]',
-    'english-certifications':'[GlobalStatus]',
+    'global-statuses':'[GlobalStatus]',
+    'english-certifications':'[EnglishCertification]',
     'education-levels':'[EducationLevel]',
 }
 
