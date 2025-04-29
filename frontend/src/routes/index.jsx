@@ -193,8 +193,8 @@ const authProtectedRoutes = [
   { path: "/recruitment/", component: DashboardRecruitment },
   { path: "/recruitment/candidate-directory", component: RecruitmentCandidateDirectory },
   { path: "/recruitment/edit-candidate/:id", component: RecruitmentCandidateEdit },
-  { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView },
-  { path: "/recruitment/candidates", component: RecruitmentCandidateView2 },
+  // { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView },
+  { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView2 },
 
   { path: "/dashboard-original", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },

@@ -104,7 +104,7 @@ def get_all_from_table(table_key):
 def get_candidate(id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM GlobalCandidate WHERE id = ?", (id,))
+    cursor.execute("SELECT * FROM GlobalCandidate WHERE CandidateID = ?", (id,))
     row = cursor.fetchone()
     conn.close()
     if row:
@@ -138,7 +138,7 @@ def update_candidate(id):
     fields = ', '.join([f"{k}=?" for k in data])
     values = list(data.values()) + [id]
 
-    cursor.execute(f"UPDATE GlobalCandidate SET {fields} WHERE id = ?", values)
+    cursor.execute(f"UPDATE GlobalCandidate SET {fields} WHERE CandidateID = ?", values)
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate updated'})
@@ -154,7 +154,7 @@ def patch_candidate(id):
     fields = ', '.join([f"{k}=?" for k in data])
     values = list(data.values()) + [id]
 
-    cursor.execute(f"UPDATE GlobalCandidate SET {fields} WHERE id = ?", values)
+    cursor.execute(f"UPDATE GlobalCandidate SET {fields} WHERE CandidateID = ?", values)
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate partially updated'})
@@ -164,7 +164,7 @@ def patch_candidate(id):
 def delete_candidate(id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM GlobalCandidate WHERE id = ?", (id,))
+    cursor.execute("DELETE FROM GlobalCandidate WHERE CandidateID = ?", (id,))
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate deleted'})

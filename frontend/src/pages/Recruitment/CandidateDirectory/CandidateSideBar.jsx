@@ -9,6 +9,7 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Link } from "react-router-dom"
 import axios from 'axios'
+import { useParams } from "react-router-dom";
 
 import avatar1 from "/src/assets/images/users/avatar-1.jpg"
 import profileImg from "/src/assets/images/profile-img.png"
@@ -41,8 +42,21 @@ const CandidateSideBar = (props) => {
     newestOnTop: true,
   };
 
+  const showQuickToastr = (message, timeout = 700) => {
+    toastr.options.timeOut = timeout; // Dynamically set the timeOut value
+    toastr.options.progressBar = false
+    toastr.success(message); // Call toastr with the message
+  };
+
+  const { id } = useParams(); // Get the id from the URL
+  const candidateId = parseInt(id, 10);
+  
+  if (isNaN(candidateId)) {
+    toastr.error("Failed to load the candidate info.");
+    throw new Error("Invalid candidate ID: " + id);
+  }
+
   const validationSchema = Yup.object({
-    CandidateID: Yup.number().required().positive().integer(),
     CandidateFirstName: Yup.string().max(250).required(),
     CandidateLastName: Yup.string().max(250).required(),
     GlobalStatusID: Yup.number().required().positive().integer(),
@@ -98,15 +112,11 @@ const CandidateSideBar = (props) => {
   useEffect(() => {
     const fetchGlobalCandidate = async () => {
       try {
-        const response = await axios.get(`api/global-candidates/1`);
-        const data = response.data;
+        const response = await axios.get(`api/global-candidates/${candidateId}`);
+        // Destructure to exclude CandidateID, UpdatedAt and CreatedAt. We don't need them in the form.
+        const { CandidateID, UpdatedAt, CreatedAt, ...restOfData } = response.data;
   
-        setInitialValues(
-          data.map(candidate => ({
-            label: candidate.candidateification,
-            value: candidate.candidateificationID,
-          }))        
-        );
+        setInitialValues( {...restOfData} );
       } catch (error) {
         toastr.error("Failed to load the information of the candidate.");
       }
@@ -155,16 +165,11 @@ const CandidateSideBar = (props) => {
             enableReinitialize={true}
             onSubmit={async (values, { setSubmitting }) => {
               try {
-                const userId = encodeURIComponent(values.id);
-                const response = await axios.patch(
-                  `api/global-candidates/${userId}`,
-                  values
-                );
-                console.success("Saved");
+                const response = await axios.patch(`api/global-candidates/${candidateId}`, values);
+                showQuickToastr("Saved.");
               } catch (error) {
-                console.error("Failed to save:", error);
-                // Optional: Show error to user
                 toastr.error("An error occurred while saving changes.");
+                console.error("Failed to save:", error);
               } finally {
                 setSubmitting(false);
               }
@@ -212,7 +217,7 @@ const CandidateSideBar = (props) => {
                         <Row>
                           <Col xs="7">
                             <div className="text-primary p-3">
-                              <h5 className="text-primary">{ initialValues.firstName + " " + initialValues.lastName }</h5>
+                              <h5 className="text-primary">{ initialValues.CandidateFirstName + " " + initialValues.CandidateLastName }</h5>
                               <br />
                             </div>
                           </Col>
@@ -248,14 +253,14 @@ const CandidateSideBar = (props) => {
                                 <Select
                                   options={globalStatusList}
                                   classNamePrefix="select2-selection"
-                                  name="globalStatus"
+                                  name="GlobalStatusID"
                                   value={globalStatusList.find(
-                                    stat => stat.value === values.globalStatus
+                                    stat => stat.value === values.GlobalStatusID
                                   )}
                                   onChange={selectedOption => {
                                     handleChange({
                                       target: {
-                                        name: "globalStatus",
+                                        name: "GlobalStatusID",
                                         value: selectedOption.value,
                                       },
                                     });
@@ -294,14 +299,14 @@ const CandidateSideBar = (props) => {
                             <Select
                               options={englishCertificationList}
                               classNamePrefix="select2-selection"
-                              name="englishCertification"
+                              name="EnglishCertificationID"
                               value={englishCertificationList.find(
-                                cert => cert.value === values.englishCertification
+                                cert => cert.value === values.EnglishCertificationID
                               )}
                               onChange={selectedOption => {
                                 handleChange({
                                   target: {
-                                    name: "englishCertification",
+                                    name: "EnglishCertificationID",
                                     value: selectedOption.value,
                                   },
                                 });
@@ -322,7 +327,7 @@ const CandidateSideBar = (props) => {
                           <Col md={7}>
                             <RatingTooltip 
                               max={5}
-                              defaultRating={values.englishRating}
+                              defaultRating={values.EnglishRating}
                               onChange={rate => {
                                 setRate(rate);
                               }}
@@ -338,10 +343,10 @@ const CandidateSideBar = (props) => {
                             <Label className="form-label">{props.t("Education")}</Label>
                             <textarea
                               className="input-large form-control"
-                              name="education"
+                              name="EducationNotes"
                               rows="3"
                               placeholder={props.t("Education") + "..."}
-                              value={values.education}
+                              value={values.EducationNotes}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -353,10 +358,10 @@ const CandidateSideBar = (props) => {
                             <Label className="form-label">{props.t("Skills")}</Label>
                             <textarea
                               className="input-large form-control"
-                              name="skills"
+                              name="Skills"
                               rows="3"
                               placeholder={props.t("Skills") + "..."}
-                              value={values.skills}
+                              value={values.Skills}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -365,10 +370,10 @@ const CandidateSideBar = (props) => {
                             <Label className="form-label">{props.t("Work History")}</Label>
                             <textarea
                               className="input-large form-control"
-                              name="workHistory"
+                              name="WorkHistory"
                               rows="3"
                               placeholder={props.t("Work History") + "..."}
-                              value={values.workHistory}
+                              value={values.WorkHistory}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
@@ -377,10 +382,10 @@ const CandidateSideBar = (props) => {
                             <Label className="form-label">{props.t("Candidate Notes")}</Label>
                             <textarea
                               className="input-large form-control"
-                              name="candidateNotes"
+                              name="CandidateNotes"
                               rows="3"
                               placeholder={props.t("Candidate Notes") + "..."}
-                              value={values.candidateNotes}
+                              value={values.CandidateNotes}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
