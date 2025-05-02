@@ -325,9 +325,9 @@ const CandidateSideBar = (props) => {
                             </Label>
                           </Col>
                           <Col md={7}>
-                            <RatingTooltip 
-                              max={5}
-                              defaultRating={values.EnglishRating}
+                            <Rating 
+                              fractions={1}
+                              initialRating={values.EnglishRating}
                               onChange={rate => {
                                 setRate(rate);
                                 handleChange({
@@ -337,13 +337,8 @@ const CandidateSideBar = (props) => {
                                   },
                                 });
                               }}
-                              onBlur={handleBlur}
-                              ActiveComponent={
-                                <i className="mdi mdi-star text-primary" />
-                              }
-                              InActiveComponent={
-                                <i className="mdi mdi-star-outline text-primary" />
-                              }
+                              emptySymbol="mdi mdi-star-outline recruitment-star"
+                              fullSymbol="mdi mdi-star text-primary recruitment-star"
                             />
                           </Col>
                           <Col md={12} className="mt-3">
