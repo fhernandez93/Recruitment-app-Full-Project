@@ -325,7 +325,26 @@ const CandidateSideBar = (props) => {
                             </Label>
                           </Col>
                           <Col md={7}>
-                            
+                            <RatingTooltip 
+                              max={5}
+                              defaultRating={values.EnglishRating}
+                              onChange={rate => {
+                                setRate(rate);
+                                handleChange({
+                                  target: {
+                                    name: "EnglishRating",
+                                    value: rate,
+                                  },
+                                });
+                              }}
+                              onBlur={handleBlur}
+                              ActiveComponent={
+                                <i className="mdi mdi-star text-primary" />
+                              }
+                              InActiveComponent={
+                                <i className="mdi mdi-star-outline text-primary" />
+                              }
+                            />
                           </Col>
                           <Col md={12} className="mt-3">
                             <Label className="form-label">{props.t("Education")}</Label>
