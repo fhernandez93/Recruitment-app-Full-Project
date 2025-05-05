@@ -116,7 +116,7 @@ const SidebarContent = props => {
                   <Link to="/recruitment/candidate-directory">{props.t("Candidate Directory")}</Link>
                 </li>
                 <li>
-                  <Link to="/recruitment/candidates">{props.t("View Candidate")}</Link>
+                  <Link to="/recruitment/candidate/1">{props.t("View Candidate")}</Link>
                 </li>
               </ul>
               <ul className="sub-menu" aria-expanded="false">
