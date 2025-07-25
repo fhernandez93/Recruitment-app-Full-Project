@@ -24,7 +24,7 @@ const Pages404 = () => {
                 <div className="mt-5 text-center">
                   <Link
                     className="btn btn-primary "
-                    to="/dashboard"
+                    to="/recruitment"
                   >
                     Back to Dashboard
                   </Link>

@@ -348,6 +348,7 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
+  { path: "/404", component: Pages404 },
 
   { path: "/home", component: HomePage },
 

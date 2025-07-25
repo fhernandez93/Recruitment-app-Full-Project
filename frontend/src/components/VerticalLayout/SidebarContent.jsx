@@ -113,6 +113,9 @@ const SidebarContent = props => {
                   <Link to="/recruitment">{props.t("Dashboard")}</Link>
                 </li>
                 <li>
+                  <Link to="/recruitment/jobs">{props.t("Jobs")}</Link>
+                </li>
+                <li>
                   <Link to="/recruitment/candidate-directory">{props.t("Candidate Directory")}</Link>
                 </li>
                 <li>
