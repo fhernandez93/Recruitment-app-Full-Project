@@ -11,10 +11,12 @@ else:
 conn = pyodbc.connect(Driver)
 cursor = conn.cursor()
 
-#Luis Tables ####################
+
+# ------------------ Tables ------------------
+
 cursor.execute('''
-    if not exists (select * from sysobjects where name='GlobalCandidate' and xtype='U')
-    create table [GlobalCandidate] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='GlobalCandidate' AND xtype='U')
+    CREATE TABLE GlobalCandidate (
         CandidateID INT IDENTITY(1,1) PRIMARY KEY,
         CandidateFirstName NVARCHAR(255) NOT NULL,
         CandidateLastName NVARCHAR(255) NOT NULL,
@@ -28,191 +30,186 @@ cursor.execute('''
         WorkHistory NVARCHAR(MAX),
         CandidateNotes NVARCHAR(MAX),
         CreatedAt DATETIME DEFAULT GETDATE(),
-        UpdatedAt DATETIME DEFAULT GETDATE()
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
 cursor.execute('''
-    if not exists (select * from sysobjects where name='EnglishCertification' and xtype='U')
-    create table [EnglishCertification] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='EnglishCertification' AND xtype='U')
+    CREATE TABLE EnglishCertification (
         CertificationID INT IDENTITY(1,1) PRIMARY KEY,
         Certification NVARCHAR(MAX),
         Comments NVARCHAR(MAX),
         Active INT,
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
 cursor.execute('''
-    if not exists (select * from sysobjects where name='GlobalStatus' and xtype='U')
-    create table [GlobalStatus] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='GlobalStatus' AND xtype='U')
+    CREATE TABLE GlobalStatus (
         StatusID INT IDENTITY(1,1) PRIMARY KEY,
         Status NVARCHAR(MAX),
         Comments NVARCHAR(MAX),
         Active INT,
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
 cursor.execute('''
-    if not exists (select * from sysobjects where name='EducationLevel' and xtype='U')
-    create table [EducationLevel] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='EducationLevel' AND xtype='U')
+    CREATE TABLE EducationLevel (
         EducationLevelID INT IDENTITY(1,1) PRIMARY KEY,
         EducationLevel NVARCHAR(MAX),
         Comments NVARCHAR(MAX),
         Active INT,
-    )
-''')
-
-
-
-#################################
-
-#Create tables 
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Interviews' and xtype='U')
-    create table [REC - Interviews] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Selected Candicate ID] INT,
-        [Job ID] INT NOT NULL,
-        [Client ID] INT NOT NULL,
-        [Global Candicate ID] INT NOT NULL,
-        [Date of Interview] DATE,
-        [Custom Job Position] varchar(max),
-        [Custom Candidate Name] varchar(max),
-        [Notes] varchar(max),
-        [Custom Role] varchar(max),
-        [Status] varchar(max),
-        [Tier] varchar(max),
-    )
-''')
-
-
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Jobs' and xtype='U')
-    create table [REC - Jobs] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Client ID] INT,
-        [BI Client ID] INT,
-        [Number of Positions Filled] INT,
-        [Role Name] varchar(max),
-        [Date Posted] DATE,
-        [Job Status] varchar(max),
-        [Role Description] varchar(max),
-        [Salary Range High] FLOAT,
-        [Salary Range Low] FLOAT,
-        [Days - Hours] FLOAT,
-        [Time Zone] varchar(max),
-        [Days (From)] varchar(max),
-        [Days (To)] varchar(max),
-        [Phone Number] varchar(max),
-        [Start Time] varchar(max),
-        [End Time] varchar(max),
-        [Notes] varchar(max),
-        [Recruiting Lead] varchar(max),
-    )
-''')
-
-
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Selected Candidates' and xtype='U')
-    create table [REC - Selected Candidates] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Compliance Asset ID] INT NOT NULL,
-        [Job ID] INT NOT NULL,
-        [Interview ID] INT NOT NULL,
-        [Global Candidate ID] INT NOT NULL,
-        [Current Status] varchar(max),
-        [Salary Offer] FLOAT,
-        [Candidate Type] varchar(max),
-        [Start Date] DATE,
-       
-    )
-''')
-
-
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Global Candidates' and xtype='U')
-    create table [REC - Global Candidates] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Candidate Name] varchar(max),
-        [Date of Birth] DATE,
-        [Employment Status] varchar(max),
-        [English Skills] varchar(max),
-        [Job Skills] varchar(max),
-        [Longevity Skills] varchar(max),
-        [Phone Number] varchar(max),
-        [Email] varchar(max),
-        [Administrative Experience] varchar(max),
-        [Call Center Experience] varchar(max),
-        [Claims Processing Experience] varchar(max),
-        [Customer Service Experience] varchar(max),
-        [Financial Experience] varchar(max),
-        [Insurance Experience] varchar(max),
-        [Teaching Experience] varchar(max),
-        [Medical Experience] varchar(max),
-        [Comments] varchar(max),
-    )
-''')
-
-
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Global Candidates' and xtype='U')
-    create table [REC - Global Candidates] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Candidate Name] varchar(max),
-        [Date of Birth] DATE,
-        [Employment Status] varchar(max),
-        [English Skills] varchar(max),
-        [Job Skills] varchar(max),
-        [Longevity Skills] varchar(max),
-        [Phone Number] varchar(max),
-        [Email] varchar(max),
-        [Administrative Experience] varchar(max),
-        [Call Center Experience] varchar(max),
-        [Claims Processing Experience] varchar(max),
-        [Customer Service Experience] varchar(max),
-        [Financial Experience] varchar(max),
-        [Insurance Experience] varchar(max),
-        [Teaching Experience] varchar(max),
-        [Medical Experience] varchar(max),
-        [Comments] varchar(max),
-    )
-''')
-
-
-cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Candidate Attachment' and xtype='U')
-    create table [REC - Candidate Attachment] (
-        ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Global Candicate ID] INT NOT NULL,
-        [Attachment] VARBINARY(MAX),
-        [Type ID] INT,
-        [Attachmment URL] varchar(max),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
 cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Frameworks' and xtype='U')
-    create table [REC - Frameworks] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Interviews' AND xtype='U')
+    CREATE TABLE Interviews (
         ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Framework Name] varchar(max),
-        [Language] varchar(max),
-        [Role Type] varchar(max)
+        SelectedCandidateID INT,
+        JobID INT NOT NULL,
+        ClientID INT NOT NULL,
+        GlobalCandidateID INT NOT NULL,
+        DateOfInterview DATE,
+        CustomJobPosition VARCHAR(MAX),
+        CustomCandidateName VARCHAR(MAX),
+        Notes VARCHAR(MAX),
+        CustomRole VARCHAR(MAX),
+        Status VARCHAR(MAX),
+        Tier VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
 cursor.execute('''
-    if not exists (select * from sysobjects where name='REC - Certifications & Courses' and xtype='U')
-    create table [REC - Certifications & Courses] (
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Jobs' AND xtype='U')
+    CREATE TABLE Jobs (
         ID INT IDENTITY(1,1) PRIMARY KEY,
-        [Global Candidate ID] INT,
-        [Certification Name] varchar(max),
-        [Organization] varchar(max),
-        [Expedition Date] DATE, 
-        [Link To Certificate] varchar(max),
+        ClientID INT,
+        BIClientID INT,
+        NumberOfPositionsFilled INT,
+        RoleName VARCHAR(MAX),
+        DatePosted DATE,
+        JobStatus VARCHAR(MAX),
+        RoleDescription VARCHAR(MAX),
+        SalaryRangeHigh FLOAT,
+        SalaryRangeLow FLOAT,
+        DaysHours FLOAT,
+        TimeZone VARCHAR(MAX),
+        DaysFrom VARCHAR(MAX),
+        DaysTo VARCHAR(MAX),
+        PhoneNumber VARCHAR(MAX),
+        StartTime VARCHAR(MAX),
+        EndTime VARCHAR(MAX),
+        Notes VARCHAR(MAX),
+        RecruitingLead VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
     )
 ''')
 
+cursor.execute('''
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SelectedCandidates' AND xtype='U')
+    CREATE TABLE SelectedCandidates (
+        ID INT IDENTITY(1,1) PRIMARY KEY,
+        ComplianceAssetID INT NOT NULL,
+        JobID INT NOT NULL,
+        InterviewID INT NOT NULL,
+        GlobalCandidateID INT NOT NULL,
+        CurrentStatus VARCHAR(MAX),
+        SalaryOffer FLOAT,
+        CandidateType VARCHAR(MAX),
+        StartDate DATE,
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
+    )
+''')
 
+cursor.execute('''
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='GlobalCandidates' AND xtype='U')
+    CREATE TABLE GlobalCandidates (
+        ID INT IDENTITY(1,1) PRIMARY KEY,
+        CandidateName VARCHAR(MAX),
+        DateOfBirth DATE,
+        EmploymentStatus VARCHAR(MAX),
+        EnglishSkills VARCHAR(MAX),
+        JobSkills VARCHAR(MAX),
+        LongevitySkills VARCHAR(MAX),
+        PhoneNumber VARCHAR(MAX),
+        Email VARCHAR(MAX),
+        AdministrativeExperience VARCHAR(MAX),
+        CallCenterExperience VARCHAR(MAX),
+        ClaimsProcessingExperience VARCHAR(MAX),
+        CustomerServiceExperience VARCHAR(MAX),
+        FinancialExperience VARCHAR(MAX),
+        InsuranceExperience VARCHAR(MAX),
+        TeachingExperience VARCHAR(MAX),
+        MedicalExperience VARCHAR(MAX),
+        Comments VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
+    )
+''')
 
+cursor.execute('''
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CandidateAttachment' AND xtype='U')
+    CREATE TABLE CandidateAttachment (
+        ID INT IDENTITY(1,1) PRIMARY KEY,
+        GlobalCandidateID INT NOT NULL,
+        Attachment VARBINARY(MAX),
+        TypeID INT,
+        AttachmentURL VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
+    )
+''')
+
+cursor.execute('''
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Frameworks' AND xtype='U')
+    CREATE TABLE Frameworks (
+        ID INT IDENTITY(1,1) PRIMARY KEY,
+        FrameworkName VARCHAR(MAX),
+        Language VARCHAR(MAX),
+        RoleType VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
+    )
+''')
+
+cursor.execute('''
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CertificationsAndCourses' AND xtype='U')
+    CREATE TABLE CertificationsAndCourses (
+        ID INT IDENTITY(1,1) PRIMARY KEY,
+        GlobalCandidateID INT,
+        CertificationName VARCHAR(MAX),
+        Organization VARCHAR(MAX),
+        ExpeditionDate DATE, 
+        LinkToCertificate VARCHAR(MAX),
+        CreatedAt DATETIME DEFAULT GETDATE(),
+        UpdatedAt DATETIME DEFAULT GETDATE(),
+        IsActive BIT DEFAULT 1
+    )
+''')
+
+# Commit and close connection
 conn.commit()
 conn.close()
