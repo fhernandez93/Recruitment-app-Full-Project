@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { withRouter, Link } from "react-router-dom";
-import { withTranslation } from "react-i18next"
 import TableContainer from "./TableContainer";
 import {
   Card,
@@ -38,10 +37,10 @@ import { isEmpty } from "lodash";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-const JobDirectory = props => {
+const JobList = props => {
 
   //meta title
-  document.title=`${props.t("Jobs")} | Optumus Suite `;
+  document.title="Jobs | Optumus Suite ";
 
   const dispatch = useDispatch();
   const [contact, setContact] = useState();
@@ -114,33 +113,33 @@ const JobDirectory = props => {
       //     return <input type="checkbox" />;
       //   },
       // },
+      // {
+      //   Header: " ",
+      //   // accessor: "name",
+      //   disableFilters: true, 
+      //   filterable: true,
+      //   accessor: (cellProps) => (
+      //     <>
+      //       {!cellProps.img ? (
+      //           <div className="avatar-xs">
+      //               <span className="avatar-title rounded-circle">
+      //                   {cellProps.name.charAt(0)}
+      //               </span>
+      //           </div>
+      //       ) : (
+      //           <div>
+      //               <img
+      //                   className="rounded-circle avatar-xs"
+      //                   src={cellProps.img}
+      //                   alt=""
+      //               />
+      //           </div>
+      //       )}
+      //   </>
+      //   ),
+      // },
       {
-        Header: " ",
-        // accessor: "name",
-        disableFilters: true, 
-        filterable: true,
-        accessor: (cellProps) => (
-          <>
-            {!cellProps.img ? (
-                <div className="avatar-xs">
-                    <span className="avatar-title rounded-circle">
-                        {cellProps.name.charAt(0)}
-                    </span>
-                </div>
-            ) : (
-                <div>
-                    <img
-                        className="rounded-circle avatar-xs"
-                        src={cellProps.img}
-                        alt=""
-                    />
-                </div>
-            )}
-        </>
-        ),
-      },
-      {
-        Header: "Name",
+        Header: "Client",
         accessor: "name",
         filterable: true,
         Cell: cellProps => {
@@ -148,7 +147,7 @@ const JobDirectory = props => {
         },
       },
       {
-        Header: "Email",
+        Header: "Role",
         accessor: "email",
         filterable: true,
         Cell: cellProps => {
@@ -156,16 +155,73 @@ const JobDirectory = props => {
         },
       },
       {
-        Header: "Experience",
-        accessor: "tags",
+        Header: "Start Date",
+        accessor: "globalStatus",
         filterable: true,
         Cell: cellProps => {
-          return <Tags {...cellProps} />;
+          return (
+            <>
+              {" "}
+              <Projects {...cellProps} />{" "}
+            </>
+          );
         },
       },
       {
-        Header: "Global Status",
-        accessor: "globalStatus",
+        Header: "Employees Needed",
+        accessor: "globalStatus2",
+        filterable: true,
+        Cell: cellProps => {
+          return (
+            <>
+              {" "}
+              <Projects {...cellProps} />{" "}
+            </>
+          );
+        },
+      },
+      {
+        Header: "Employees Hired",
+        accessor: "globalStatus23",
+        filterable: true,
+        Cell: cellProps => {
+          return (
+            <>
+              {" "}
+              <Projects {...cellProps} />{" "}
+            </>
+          );
+        },
+      },
+      {
+        Header: "Last Action Date",
+        accessor: "globalStatus24",
+        filterable: true,
+        Cell: cellProps => {
+          return (
+            <>
+              {" "}
+              <Projects {...cellProps} />{" "}
+            </>
+          );
+        },
+      },
+      {
+        Header: "Recruiting Lead",
+        accessor: "globalStatus25",
+        filterable: true,
+        Cell: cellProps => {
+          return (
+            <>
+              {" "}
+              <Projects {...cellProps} />{" "}
+            </>
+          );
+        },
+      },
+      {
+        Header: "Status",
+        accessor: "projects",
         filterable: true,
         Cell: cellProps => {
           return (
@@ -310,7 +366,7 @@ const JobDirectory = props => {
                     data={users}
                     isGlobalFilter={true}
                     isAddUserList={true}
-                    addUserLabel="Add Candidate"
+                    addUserLabel="Add Job"
                     handleUserClick={ () => props.history.push(`/recruitment/edit-candidate/9}`) }
                     customPageSize={10}
                     className="custom-header-css"
@@ -482,4 +538,4 @@ const JobDirectory = props => {
   );
 };
 
-export default withRouter(withTranslation()(JobDirectory));
+export default withRouter(JobList);

@@ -10,7 +10,7 @@ const Footer = () => {
             <Col md={6}>{new Date().getFullYear()} © Optumus Suite.</Col>
             <Col md={6}>
               <div className="text-sm-end d-none d-sm-block">
-                Design & Develop by Optumus LLC
+                © Optumus LLC
               </div>
             </Col>
           </Row>

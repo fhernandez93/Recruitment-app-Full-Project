@@ -7,10 +7,31 @@ import avatar6 from "../../assets/images/users/avatar-6.jpg"
 import avatar7 from "../../assets/images/users/avatar-7.jpg"
 import avatar8 from "../../assets/images/users/avatar-8.jpg"
 
-
-
-
 const users = [
+  {
+    id: 1,
+    name: "Client 1",
+    email: "Role 1",
+    globalStatus: "11/11/2011",
+    designation: "UI/UX Designer",
+    color: "primary",
+    projects: "Open",
+    tags: ["Administrative", "Call Center"],
+  },
+  {
+    id: 2,
+    name: "Client 2",
+    email: "Role 2",
+    globalStatus: "11/11/2012",
+    designation: "UI/UX Designer",
+    color: "primary",
+    projects: "Open",
+    tags: ["Administrative", "Call Center"],
+  },
+]
+
+
+const users2 = [
   {
     id: 1,
     name: "David McHenry",

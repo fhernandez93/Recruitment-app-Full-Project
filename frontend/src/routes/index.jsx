@@ -76,6 +76,9 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 
 // // Recruitment
 import DashboardRecruitment from "../pages/Dashboard-Recruitment/index"
+// Job
+import JobsList from "../pages/Recruitment/Jobs/index"
+// Candidate
 import RecruitmentCandidateDirectory from "../pages/Recruitment/CandidateDirectory/index"
 import RecruitmentCandidateEdit from "../pages/Recruitment/EditCandidate"
 import RecruitmentCandidateView from "../pages/Recruitment/CandidateDirectory/CandidateView"
@@ -193,8 +196,9 @@ const authProtectedRoutes = [
   { path: "/recruitment/", component: DashboardRecruitment },
   { path: "/recruitment/candidate-directory", component: RecruitmentCandidateDirectory },
   { path: "/recruitment/edit-candidate/:id", component: RecruitmentCandidateEdit },
-  // { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView },
   { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView2 },
+  
+  { path: "/recruitment/jobs", component: JobsList },
 
   { path: "/dashboard-original", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
