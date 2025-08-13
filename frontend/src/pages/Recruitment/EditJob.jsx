@@ -551,7 +551,7 @@ const EditJob = () => {
                   </Row>
                   <Row>
                     <Col xs={12} className="mt-3">
-                      <button type="button" className="btn btn-primary" >
+                      <button type="button" className="btn btn-primary float-end" >
                         <i className="bx bx-send font-size-16 align-middle me-2"></i>{" "}
                         Submit
                       </button>
