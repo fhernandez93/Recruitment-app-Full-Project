@@ -140,15 +140,23 @@ const EditJob = () => {
   return (
     <div className="page-content">
       <Container fluid>
-        <Breadcrumbs rootTitle="Recruitment" rootLink="/recruitment/" title="Candidatezzzzzzz Directory" titleLink="/recruitment/candidate-directory" breadcrumbItem="Edit Candidate" />
+        <Breadcrumbs rootTitle="Recruitment" rootLink="/recruitment/" title="Job" titleLink="/recruitment/edit-job" breadcrumbItem="Edit Job" />
         <Row>
           <Col lg="12">
             <Card>
               <CardBody>
-                <CardTitle className="mb-4">Candidate Information</CardTitle>
+                <CardTitle className="mb-4">Job Information</CardTitle>
                 <Form onSubmit={validation.handleSubmit}>
-                  <Row form>
-                    <Col xs={6}>
+                  {/* Job name */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4">
+                        <Label className="form-label mt-2 text-muted">
+                          What should this job be called?
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
                       <div className="mb-3">
                         <Label className="form-label">Name</Label>
                         <Input
@@ -163,214 +171,396 @@ const EditJob = () => {
                           <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
                         ) : null}
                       </div>
-                      {/* Add other fields (designation, email, tags, projects) similarly */}
                     </Col>
-                    <Col xs={6}>
-                      <div className="mb-3">
-                        <Label className="form-label">Date of Birth</Label>
-                        <div className="col-md-12">
-                          <input
-                            className="form-control"
-                            type="date"
-                            defaultValue="2019-08-19"
-                            id="example-date-input"
-                          />
-                        </div>
-                        {validation.touched.name && validation.errors.name ? (
-                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
-                        ) : null}
+                  </Row>
+                  {/* Job ID */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          ID code for this job
+                        </Label>
                       </div>
-                      {/* Add other fields (designation, email, tags, projects) similarly */}
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={12} md={5} className="mt-3">
                       <div className="mb-3">
-                        <Label className="form-label">Global Status</Label>
-                        <Select
-                          value={selectedGroup}
-                          onChange={() => {
-                            handleSelectGroup();
-                          }}
-                          options={optionGroup}
-                          classNamePrefix="select2-selection"
+                        <Label className="form-label">Job ID</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
                         />
                         {validation.touched.name && validation.errors.name ? (
                           <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
                         ) : null}
                       </div>
-                      {/* Add other fields (designation, email, tags, projects) similarly */}
-                    </Col>
-                    <Col xs={3}>
-                      <div className="mb-3">
-                        <Label className="d-block mb-3">English Skills</Label>
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="customRadioInline1"
-                            name="customRadioInline1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="customRadioInline1"
-                          >
-                            Poor
-                          </Label>
-                        </div>
-                        &nbsp;
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="customRadioInline2"
-                            name="customRadioInline1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="customRadioInline2"
-                          >
-                            Good
-                          </Label>
-                        </div>
-                        &nbsp;
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="customRadioInline3"
-                            name="customRadioInline1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="customRadioInline3"
-                          >
-                            Great
-                          </Label>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col xs={3}>
-                      <div className="mb-3">
-                        <Label className="d-block mb-3">Longevity Skills</Label>
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="rdoLongetivity1"
-                            name="rdoLongetivity1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="rdoLongetivity1"
-                          >
-                            Poor
-                          </Label>
-                        </div>
-                        &nbsp;
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="rdoLongetivity2"
-                            name="rdoLongetivity1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="rdoLongetivity2"
-                          >
-                            Good
-                          </Label>
-                        </div>
-                        &nbsp;
-                        <div className="form-check form-check-inline">
-                          <Input
-                            type="radio"
-                            id="rdoLongetivity3"
-                            name="rdoLongetivity1"
-                            className="form-check-input"
-                          />
-                          <Label
-                            className="form-check-label"
-                            htmlFor="rdoLongetivity3"
-                          >
-                            Great
-                          </Label>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col lg={12} className="mb-3">
-                      <Label className="d-block mb-3">Experience</Label>
-                      {["Administrative", "Call Center", "Claims Processing", "Customer Service", "Financial", "Insurance", "Medical Background", "Teaching"].map((checkName, index) => (
-                        <div className="form-check form-check-inline" key={index}>
-                          <Input
-                            type="checkbox"
-                            className="form-check-Input"
-                            id={`formrow-customCheck${index + 1}`}
-                          />
-                          <Label
-                            className="form-check-Label"
-                            htmlFor={`formrow-customCheck${index + 1}`}
-                          >
-                            {checkName}
-                          </Label>
-                          &nbsp;&nbsp;
-                        </div>
-                      ))}
-                    </Col>
-                    <Col lg={12} className="mb-3">
-                      <label htmlFor="message">Comments</label>
-                      <textarea
-                        id="message"
-                        className="form-control"
-                        placeholder="Enter Your Coment"
-                      ></textarea>
                     </Col>
                   </Row>
+                  {/* Client */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4">
+                        <Label className="form-label mt-2 text-muted">
+                          What is the client's name?
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3 pr-1">
+                        <Label className="form-label">Client</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Location */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Set the location for your job postings here. Some job feeds require each listing to have a specific location. If left blank, location details will not be requested
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">City</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">State</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Country</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Dates */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Enter the dates for when the job was posted and when the position is scheduled to start
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">Date Posted</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Job Start Date</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Hiring Team */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Information about the hiring team involved in the recruitment process
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">Recruiting Lead</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Hiring Manager</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Interviewers</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Details */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Key details about the job, including status, description, and salary range
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">Job Status</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Job Description</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Salary Range Low</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Salary Range High</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Schedule */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Work schedule details, time zone and days of the week
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">Time Zone</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Days (from)</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Days (to)</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Start Time - End Time</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  {/* Employees needed */}
+                  <Row className="edit-job-row">
+                    <Col xs={12} md={5} className="offset-md-1 mt-3">
+                      <div className="mt-4 pr-1">
+                        <Label className="form-label mt-2 text-muted">
+                          Number of positions required and how many have been filled
+                        </Label>
+                      </div>
+                    </Col>
+                    <Col xs={12} md={5} className="mt-3">
+                      <div className="mb-3">
+                        <Label className="form-label">Date Posted</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Job Start Date</Label>
+                        <Input
+                          name="name"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.name || ""}
+                          invalid={validation.touched.name && validation.errors.name}
+                        />
+                        {validation.touched.name && validation.errors.name ? (
+                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={12} className="mt-3">
+                      <button type="button" className="btn btn-primary" >
+                        <i className="bx bx-send font-size-16 align-middle me-2"></i>{" "}
+                        Submit
+                      </button>
+                    </Col>
+                  </Row>
+
                 </Form>
               </CardBody>
             </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="6">
-            <Card>
-              <CardBody>
-                <CardTitle className="mb-4">Certifications & Courses</CardTitle>
-                <TableContainer
-                    columns={certificationColumns}
-                    data={certificationData}
-                    isGlobalFilter={true}
-                    isAddOptions={false}
-                    customPageSize={10}
-                    className="custom-header-css"
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="6">
-            <Card>
-              <CardBody>
-                <CardTitle className="mb-4">Interviews</CardTitle>
-                <TableContainer
-                    columns={interviewColumns}
-                    data={interviewData}
-                    isGlobalFilter={true}
-                    isAddOptions={false}
-                    customPageSize={10}
-                    className="custom-header-css"
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className="text-end">
-              <button type="submit" className="btn btn-success">
-                Save
-              </button>
-              <br />
-              <br />
-            </div>
           </Col>
         </Row>
       </Container>

@@ -78,6 +78,7 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 import DashboardRecruitment from "../pages/Dashboard-Recruitment/index"
 // Job
 import JobsList from "../pages/Recruitment/Jobs/index"
+import JobsEdit from "../pages/Recruitment/EditJob"
 // Candidate
 import RecruitmentCandidateDirectory from "../pages/Recruitment/CandidateDirectory/index"
 import RecruitmentCandidateEdit from "../pages/Recruitment/EditCandidate"
@@ -189,6 +190,7 @@ import Pages500 from "../pages/Utility/pages-500"
 import ContactsGrid from "../pages/Contacts/contacts-grid"
 import ContactsList from "../pages/Contacts/ContactList/contacts-list"
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
+import EditJob from './../pages/Recruitment/EditJob';
 
 const authProtectedRoutes = [
   
@@ -199,6 +201,7 @@ const authProtectedRoutes = [
   { path: "/recruitment/candidate/:id", component: RecruitmentCandidateView2 },
   
   { path: "/recruitment/jobs", component: JobsList },
+  { path: "/recruitment/edit-job/:id", component: JobsEdit },
 
   { path: "/dashboard-original", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
