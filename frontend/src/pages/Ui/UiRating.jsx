@@ -6,7 +6,6 @@ import { Row, Col, Card, CardBody, Container } from "reactstrap";
 
 // Rating Plugin
 import Rating from "react-rating";
-import RatingTooltip from "react-rating-tooltip";
 
 const UiRating = () => {
 

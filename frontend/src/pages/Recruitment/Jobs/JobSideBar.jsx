@@ -11,6 +11,11 @@ import { Link } from "react-router-dom"
 import axios from 'axios'
 import { useParams } from "react-router-dom";
 
+//Import images
+import avatar2 from "/src/assets/images/users/avatar-2.jpg"
+import avatar3 from "/src/assets/images/users/avatar-3.jpg"
+import avatar4 from "/src/assets/images/users/avatar-4.jpg"
+import avatar6 from "/src/assets/images/users/avatar-6.jpg"
 import avatar1 from "/src/assets/images/users/avatar-1.jpg"
 import profileImg from "/src/assets/images/profile-img.png"
 
@@ -67,63 +72,6 @@ const JobSideBar = (props) => {
     WorkHistory: Yup.string().max(2500),
     CandidateNotes: Yup.string().max(2500),
   });
-  
-  useEffect(() => {
-    const fetchGlobalStatusList = async () => {
-      try {
-        const response = await axios.get(`api/global-statuses`);
-        const data = response.data;
-  
-        setGlobalStatusList(
-          data.map(stat => ({
-            label: stat.Status,
-            value: stat.StatusID,
-          }))
-        );
-      } catch (error) {
-        toastr.error("Failed to load the list of Status.");
-      }
-    };
-  
-    fetchGlobalStatusList();
-  }, []);
-
-  useEffect(() => {
-    const fetchEnglishCertifications = async () => {
-      try {
-        const response = await axios.get(`api/english-certifications`);
-        const data = response.data;
-  
-        setEnglishCertificationList(
-          data.map(cert => ({
-            label: cert.Certification,
-            value: cert.CertificationID,
-          }))        
-        );
-      } catch (error) {
-        toastr.error("Failed to load English Certifications.");
-      }
-    };
-  
-    fetchEnglishCertifications();
-  }, []);
-  
-  
-  useEffect(() => {
-    const fetchGlobalCandidate = async () => {
-      try {
-        const response = await axios.get(`api/global-candidates/${candidateId}`);
-        // Destructure to exclude CandidateID, UpdatedAt and CreatedAt. We don't need them in the form.
-        const { CandidateID, UpdatedAt, CreatedAt, ...restOfData } = response.data;
-  
-        setInitialValues( {...restOfData} );
-      } catch (error) {
-        toastr.error("Failed to load the information of the candidate.");
-      }
-    };
-  
-    fetchGlobalCandidate();
-  }, [])
 
   const CustomPrevArrow = () => {
     return (
@@ -156,254 +104,97 @@ const JobSideBar = (props) => {
   
   return (
     <React.Fragment>
-      { initialValues ? 
-        (
-          <Formik 
-            innerRef={ref}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            enableReinitialize={true}
-            onSubmit={async (values, { setSubmitting }) => {
-              try {
-                const response = await axios.patch(`api/global-candidates/${candidateId}`, values);
-                showQuickToastr("Saved.");
-              } catch (error) {
-                toastr.error("An error occurred while saving changes.");
-                console.error("Failed to save:", error);
-              } finally {
-                setSubmitting(false);
-              }
+      { 
+        <Formik 
+          innerRef={ref}
+          initialValues={
+            [
+              {}
+            ]
+          }
+          validationSchema={validationSchema}
+          enableReinitialize={true}
+        >
+          {
+            ({ values, handleChange, handleBlur, handleSubmit, isSubmitting, errors, touched }) => {
 
-            }}
-          >
-            {
-              ({ values, handleChange, handleBlur, handleSubmit, isSubmitting, errors, touched }) => {
-
-                const timeoutRef = useRef(null);
-                const previousValues = useRef(values);
-
-                useEffect(() => {
-                  // Skip the first render
-                  if (JSON.stringify(previousValues.current) === JSON.stringify(values)) return;
-
-                  // Clear the previous timeout
-                  if (timeoutRef.current) {
-                    clearTimeout(timeoutRef.current);
-                  }
-
-                  // Set a new timeout
-                  timeoutRef.current = setTimeout(() => {
-                    handleSubmit();
-                  }, 1000); // Delay in milliseconds
-
-                  previousValues.current = values;
-                  
-                  return () => {
-                    clearTimeout(timeoutRef.current);
-                  };
-                }, [values, handleSubmit]);
-
-                return (
-                  <Form>
-                    {
-                      isSubmitting && (
-                        <div className="spinner-border text-primary sidebar-spinner" role="status">
-                          <span className="visually-hidden">Saving...</span>
+              return (
+                <Form>
+                  <Card className="overflow-hidden">
+                    <div className="bg-primary bg-soft">
+                      <Row>
+                        <Col xs="7">
+                          <div className="text-primary p-3">
+                            <h5 className="text-primary">Label__1</h5>
+                            <br />
+                          </div>
+                        </Col>
+                        <Col xs="5" className="align-self-end">
+                          <img src={profileImg} alt="" className="img-fluid" />
+                        </Col>
+                      </Row>
+                    </div>
+                    <CardBody className="pt-0">
+                      <div className="mt-2">
+                      <Link to="#" className="d-flex">
+                        <img
+                          className="d-flex me-3 rounded-circle"
+                          src={avatar2}
+                          alt="optumus-suite"
+                          height="36"
+                        />
+                        <div className="flex-grow-1 chat-user-box">
+                          <p className="user-title m-0">John Doe</p>
+                          <p className="text-muted">Senior Dev</p>
                         </div>
-                      )
-                    }
-                    <Card className="overflow-hidden">
-                      <div className="bg-primary bg-soft">
-                        <Row>
-                          <Col xs="7">
-                            <div className="text-primary p-3">
-                              <h5 className="text-primary">{ initialValues.CandidateFirstName + " " + initialValues.CandidateLastName }</h5>
-                              <br />
-                            </div>
-                          </Col>
-                          <Col xs="5" className="align-self-end">
-                            <img src={profileImg} alt="" className="img-fluid" />
-                          </Col>
-                        </Row>
-                      </div>
-                      <CardBody className="pt-0">
-                        <Row>
-                          <Col sm="3">
-                            <div className="avatar-md profile-user-wid mb-2" >
-                              <img
-                                src={avatar1}
-                                alt=""
-                                className="img-thumbnail rounded-circle"
-                              />
-                            </div>
-                          </Col>
-                          <Col sm="9" className="" style={{top: '-2.7rem'}}>
-                            <Row className="">
-                              <Col sm={4}>
-                                <Label
-                                  htmlFor="horizontal-firstname-Input"
-                                  className="col-form-label"
-                                >
-                                  {
-                                    props.t("Status")
-                                  }
-                                </Label>
-                              </Col>
-                              <Col sm={8}>
-                                <Select
-                                  options={globalStatusList}
-                                  classNamePrefix="select2-selection"
-                                  name="GlobalStatusID"
-                                  value={globalStatusList.find(
-                                    stat => stat.value === values.GlobalStatusID
-                                  )}
-                                  onChange={selectedOption => {
-                                    handleChange({
-                                      target: {
-                                        name: "GlobalStatusID",
-                                        value: selectedOption.value,
-                                      },
-                                    });
-                                  }}
-                                  onBlur={handleBlur}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row>
-                          
-                        </Row>
-                        <Row className="">
-                          <Slider {...sliderSettings}>
-                            <div className="slide text-center" key="slide1">
-                              <i className="far fa-file-pdf text-danger"></i>
-                              <p className="text-muted mb-0">Resume (EN)</p>
-                            </div>
-                            <div className="slide text-center" key="slide2">
-                              <i className="far fa-file-word text-primary"></i>
-                              <p className="text-muted mb-0">Resume (ES)</p>
-                            </div>
-                          </Slider>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col sm={5}>
-                            <Label
-                              htmlFor="english-certification"
-                              className="col-form-label"
-                            >
-                              {props.t("English Certification")}
-                            </Label>
-                          </Col>
-                          <Col md={7}>
-                            <Select
-                              options={englishCertificationList}
-                              classNamePrefix="select2-selection"
-                              name="EnglishCertificationID"
-                              value={englishCertificationList.find(
-                                cert => cert.value === values.EnglishCertificationID
-                              )}
-                              onChange={selectedOption => {
-                                handleChange({
-                                  target: {
-                                    name: "EnglishCertificationID",
-                                    value: selectedOption.value,
-                                  },
-                                });
-                              }}
-                              onBlur={handleBlur}
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-1">
-                          <Col sm={5}>
-                            <Label
-                              htmlFor="english-rating"
-                              className="col-form-label"
-                            >
-                              {props.t("English Rating")}
-                            </Label>
-                          </Col>
-                          <Col md={7}>
-                            <Rating 
-                              fractions={1}
-                              initialRating={values.EnglishRating}
-                              onChange={rate => {
-                                setRate(rate);
-                                handleChange({
-                                  target: {
-                                    name: "EnglishRating",
-                                    value: rate,
-                                  },
-                                });
-                              }}
-                              emptySymbol="mdi mdi-star-outline recruitment-star"
-                              fullSymbol="mdi mdi-star text-primary recruitment-star"
-                            />
-                          </Col>
-                          <Col md={12} className="mt-3">
-                            <Label className="form-label">{props.t("Education")}</Label>
-                            <textarea
-                              className="input-large form-control"
-                              name="EducationNotes"
-                              rows="3"
-                              placeholder={props.t("Education") + "..."}
-                              value={values.EducationNotes}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                            {
-                              // errors.education && <div>{errors.education}</div>
-                            }
-                          </Col>
-                          <Col md={12} className="mt-3">
-                            <Label className="form-label">{props.t("Skills")}</Label>
-                            <textarea
-                              className="input-large form-control"
-                              name="Skills"
-                              rows="3"
-                              placeholder={props.t("Skills") + "..."}
-                              value={values.Skills}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </Col>
-                          <Col md={12} className="mt-3">
-                            <Label className="form-label">{props.t("Work History")}</Label>
-                            <textarea
-                              className="input-large form-control"
-                              name="WorkHistory"
-                              rows="3"
-                              placeholder={props.t("Work History") + "..."}
-                              value={values.WorkHistory}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </Col>
-                          <Col md={12} className="mt-3">
-                            <Label className="form-label">{props.t("Candidate Notes")}</Label>
-                            <textarea
-                              className="input-large form-control"
-                              name="CandidateNotes"
-                              rows="3"
-                              placeholder={props.t("Candidate Notes") + "..."}
-                              value={values.CandidateNotes}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </Col>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Form>
-                )
-              }
+                      </Link>
+
+                      <Link to="#" className="d-flex">
+                        <img
+                          className="d-flex me-3 rounded-circle"
+                          src={avatar3}
+                          alt="optumus-suite"
+                          height="36"
+                        />
+                        <div className="chat-user-box">
+                          <p className="user-title m-0">Johnny Doe</p>
+                          <p className="text-muted">Senior Dev</p>
+                        </div>
+                      </Link>
+
+                      <Link to="#" className="d-flex">
+                        <img
+                          className="d-flex me-3 rounded-circle"
+                          src={avatar4}
+                          alt="optumus-suite"
+                          height="36"
+                        />
+                        <div className="chat-user-box">
+                          <p className="user-title m-0">Jane Doe</p>
+                          <p className="text-muted">Junior Dev</p>
+                        </div>
+                      </Link>
+
+                      <Link to="#" className="d-flex">
+                        <img
+                          className="d-flex me-3 rounded-circle"
+                          src={avatar6}
+                          alt="optumus-suite"
+                          height="36"
+                        />
+                        <div className="chat-user-box">
+                          <p className="user-title m-0">Jay Doe</p>
+                          <p className="text-muted">Junior Dev</p>
+                        </div>
+                      </Link>
+                    </div>
+                    </CardBody>
+                  </Card>
+                </Form>
+              )
             }
-          </Formik>
-        ) :  
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+          }
+        </Formik>
       }
     </React.Fragment>
   )

@@ -79,6 +79,7 @@ import DashboardRecruitment from "../pages/Dashboard-Recruitment/index"
 // Job
 import JobsList from "../pages/Recruitment/Jobs/index"
 import JobsEdit from "../pages/Recruitment/EditJob"
+import JobView from "../pages/Recruitment/ViewJob"
 // Candidate
 import RecruitmentCandidateDirectory from "../pages/Recruitment/CandidateDirectory/index"
 import RecruitmentCandidateEdit from "../pages/Recruitment/EditCandidate"
@@ -202,6 +203,7 @@ const authProtectedRoutes = [
   
   { path: "/recruitment/jobs", component: JobsList },
   { path: "/recruitment/edit-job/:id", component: JobsEdit },
+  { path: "/recruitment/job/:id", component: JobView },
 
   { path: "/dashboard-original", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },

@@ -247,12 +247,12 @@ const JobList = props => {
                 >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
                 <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Delete
+                  Delete Job
                 </UncontrolledTooltip>
               </Link>
               <Link
                 to="#"
-                className="text-success"
+                className="text-secondary"
                 onClick={() => {
                   const userData = cellProps.row.original;
                   props.history.push(`/recruitment/edit-job/${userData.id}`); // Redirect to the edit route
@@ -260,7 +260,20 @@ const JobList = props => {
               >
                 <i className="mdi mdi-pencil font-size-18" id="edittooltip" />
                 <UncontrolledTooltip placement="top" target="edittooltip">
-                  Edit
+                  Edit Job
+                </UncontrolledTooltip>
+              </Link>
+              <Link
+                to="#"
+                className="text-secondary"
+                onClick={() => {
+                  const userData = cellProps.row.original;
+                  props.history.push(`/recruitment/job/${userData.id}`); // Redirect to the edit route
+                }}
+              >
+                <i className="mdi mdi-eye font-size-18" id="edittooltip" />
+                <UncontrolledTooltip placement="top" target="edittooltip">
+                  View Job
                 </UncontrolledTooltip>
               </Link>
             </div>

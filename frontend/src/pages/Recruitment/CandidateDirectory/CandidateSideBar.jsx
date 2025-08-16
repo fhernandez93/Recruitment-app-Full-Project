@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 import { Row, Col, Card, CardBody, Label, FormGroup, Input, Form } from "reactstrap"
 import Rating from "react-rating";
-import RatingTooltip from "react-rating-tooltip";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Link } from "react-router-dom"

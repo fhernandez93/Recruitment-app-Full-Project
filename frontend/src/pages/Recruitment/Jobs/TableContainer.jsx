@@ -51,6 +51,12 @@ function GlobalFilter({
   );
 }
 
+GlobalFilter.propTypes = {
+  preGlobalFilteredRows: PropTypes.array.isRequired,
+  globalFilter: PropTypes.any,
+  setGlobalFilter: PropTypes.func.isRequired,
+};
+
     const TableContainer = ({
       columns,
       data,
@@ -191,36 +197,41 @@ function GlobalFilter({
       <div className="table-responsive react-table">
         <Table bordered hover {...getTableProps()} className={className}>
           <thead className="table-light table-nowrap">
-            {headerGroups.map(headerGroup => (
-              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+            {headerGroups.map(headerGroup => {
+              const { key, ...restProps } = headerGroup.getHeaderGroupProps();
+              return (
+              <tr key={key} {...restProps}>
                 {headerGroup.headers.map(column => (
-                  <th key={column.id}>
-                    <div className="mb-2" {...column.getSortByToggleProps()}>
-                      {column.render("Header")}
-                      {generateSortingIndicator(column)}
-                    </div>
-                    <Filter column={column} />
-                  </th>
-                ))}
+                    <th key={column.id}>
+                      <div className="mb-2" {...column.getSortByToggleProps()}>
+                        {column.render("Header")}
+                        {generateSortingIndicator(column)}
+                      </div>
+                      <Filter column={column} />
+                    </th>
+                  )
+                )}
               </tr>
-            ))}
+            )}
+          
+            )}
           </thead>
 
           <tbody {...getTableBodyProps()}>
             {page.map(row => {
               prepareRow(row);
+              const { key: rowKey, ...restRowProps } = row.getRowProps();
               return (
-                <Fragment key={row.getRowProps().key}>
-                  <tr>
-                    {row.cells.map(cell => {
-                      return (
-                        <td key={cell.id} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </Fragment>
+                <tr key={rowKey} {...restRowProps}>
+                  {row.cells.map(cell => {
+                    const { key: cellKey, ...restCellProps } = cell.getCellProps();
+                    return (
+                      <td key={cellKey} {...restCellProps}>
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
               );
             })}
           </tbody>
@@ -282,8 +293,21 @@ function GlobalFilter({
   );
 };
 
+
 TableContainer.propTypes = {
-  preGlobalFilteredRows: PropTypes.any,
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+  isGlobalFilter: PropTypes.bool,
+  isAddOptions: PropTypes.bool,
+  isAddUserList: PropTypes.bool,
+  addUserLabel: PropTypes.string,
+  handleOrderClicks: PropTypes.func,
+  handleUserClick: PropTypes.func,
+  handleCustomerClick: PropTypes.func,
+  isAddCustList: PropTypes.bool,
+  customPageSize: PropTypes.number,
+  className: PropTypes.string,
+  customPageSizeOptions: PropTypes.array,
 };
 
 export default TableContainer;
