@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useCallback} from "react"
 import Select from "react-select"
 import { withRouter } from "react-router-dom"
 import { withTranslation } from "react-i18next"
-import { Row, Col, Card, CardBody, Label, FormGroup, Input, Form } from "reactstrap"
+import { Row, Col, Card, CardBody, Label, FormGroup, Input, Form, Nav, NavItem, NavLink } from "reactstrap"
 import Rating from "react-rating";
 import RatingTooltip from "react-rating-tooltip";
 import { Formik } from "formik";
@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import { Link } from "react-router-dom"
 import axios from 'axios'
 import { useParams } from "react-router-dom";
+import classnames from "classnames";
 
 //Import images
 import avatar2 from "/src/assets/images/users/avatar-2.jpg"
@@ -29,13 +30,20 @@ import "toastr/build/toastr.min.css";
 axios.defaults.baseURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 const JobSideBar = (props) => {
-
+  const [customActiveTab, setcustomActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState("1");
   const [initialValues, setInitialValues] = useState(null);
   const [selectedGroup, setselectedGroup] = useState(null);
   const [englishCertificationList, setEnglishCertificationList] = useState([]);
   const [globalStatusList, setGlobalStatusList] = useState([]);
   const [rate, setRate] = useState("");
   const ref = React.createRef();
+
+  const toggleCustom = tab => {
+    if (customActiveTab !== tab) {
+      setcustomActiveTab(tab);
+    }
+  }
 
   toastr.options = {
     positionClass: "toast-top-right",
@@ -123,71 +131,144 @@ const JobSideBar = (props) => {
                   <Card className="overflow-hidden">
                     <div className="bg-primary bg-soft">
                       <Row>
-                        <Col xs="7">
-                          <div className="text-primary p-3">
-                            <h5 className="text-primary">Label__1</h5>
-                            <br />
-                          </div>
-                        </Col>
-                        <Col xs="5" className="align-self-end">
-                          <img src={profileImg} alt="" className="img-fluid" />
-                        </Col>
+                        <Card className="mb-0">
+                          <CardBody>
+                            <Col xs="12">
+                              <Nav tabs className="nav-tabs-custom nav-justified">
+                                <NavItem>
+                                  <NavLink
+                                    style={{ cursor: "pointer" }}
+                                    className={classnames({
+                                      active: customActiveTab === "1",
+                                    })}
+                                    onClick={() => {
+                                      toggleCustom("1");
+                                    }}
+                                  >
+                                    <span className="d-block d-sm-none">
+                                      <i className="far fa-user"></i>
+                                    </span>
+                                    <span className="d-none d-sm-block">Qualified 4</span>
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    style={{ cursor: "pointer" }}
+                                    className={classnames({
+                                      active: customActiveTab === "2",
+                                    })}
+                                    onClick={() => {
+                                      toggleCustom("2");
+                                    }}
+                                  >
+                                    <span className="d-block d-sm-none">
+                                      <i className="far fa-envelope"></i>
+                                    </span>
+                                    <span className="d-none d-sm-block">Disqualified 0</span>
+                                  </NavLink>
+                                </NavItem>
+                              </Nav>
+                            </Col>
+                          </CardBody>
+                        </Card>
                       </Row>
                     </div>
                     <CardBody className="pt-0">
                       <div className="mt-2">
-                      <Link to="#" className="d-flex">
-                        <img
-                          className="d-flex me-3 rounded-circle"
-                          src={avatar2}
-                          alt="optumus-suite"
-                          height="36"
-                        />
-                        <div className="flex-grow-1 chat-user-box">
-                          <p className="user-title m-0">John Doe</p>
-                          <p className="text-muted">Senior Dev</p>
-                        </div>
-                      </Link>
+                        <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
+                          <div className="search-box me-2">
+                            <div className="position-relative">
+                              <Input
+                                type="text"
+                                className="form-control "
+                                placeholder="Search..."
+                              />
+                              <i className="bx bx-search-alt search-icon" />
+                            </div>
+                          </div>
+                          <Nav className="product-view-nav" pills>
+                            <NavItem>
+                              <NavLink
+                                className={classnames({
+                                  active: activeTab === "1",
+                                })}
+                                onClick={() => {
+                                  toggleTab("1")
+                                }}
+                              >
+                                <i className="bx bx-grid-alt" />
+                              </NavLink>
+                            </NavItem>
+                            <NavItem>
+                              <NavLink
+                                className={classnames({
+                                  active: activeTab === "2",
+                                })}
+                                onClick={() => {
+                                  toggleTab("2")
+                                }}
+                              >
+                                <i className="bx bx-list-ul" />
+                              </NavLink>
+                            </NavItem>
+                          </Nav>
+                        </Form>
+                      </div>
+                    </CardBody>
+                    <CardBody className="pt-0 viewjob-sidebar">
+                      <div className="mt-2">
+                        <Link to="#" className="d-flex candidate">
+                          <img
+                            className="d-flex me-3 rounded-circle"
+                            src={avatar2}
+                            alt="optumus-suite"
+                            height="45"
+                          />
+                          <div className="flex-grow-1 chat-user-box">
+                            <p className="user-title m-0">John Doe</p>
+                            <p className="text-muted">Senior Dev</p>
+                          </div>
+                        </Link>
 
-                      <Link to="#" className="d-flex">
-                        <img
-                          className="d-flex me-3 rounded-circle"
-                          src={avatar3}
-                          alt="optumus-suite"
-                          height="36"
-                        />
-                        <div className="chat-user-box">
-                          <p className="user-title m-0">Johnny Doe</p>
-                          <p className="text-muted">Senior Dev</p>
-                        </div>
-                      </Link>
+                        <Link to="#" className="d-flex candidate">
+                          <img
+                            className="d-flex me-3 rounded-circle"
+                            src={avatar3}
+                            alt="optumus-suite"
+                            height="45"
+                          />
+                          <div className="chat-user-box">
+                            <p className="user-title m-0">Johnny Doe</p>
+                            <p className="text-muted">Senior Dev</p>
+                          </div>
+                        </Link>
 
-                      <Link to="#" className="d-flex">
-                        <img
-                          className="d-flex me-3 rounded-circle"
-                          src={avatar4}
-                          alt="optumus-suite"
-                          height="36"
-                        />
-                        <div className="chat-user-box">
-                          <p className="user-title m-0">Jane Doe</p>
-                          <p className="text-muted">Junior Dev</p>
-                        </div>
-                      </Link>
+                        <Link to="#" className="d-flex candidate">
+                          <img
+                            className="d-flex me-3 rounded-circle"
+                            src={avatar4}
+                            alt="optumus-suite"
+                            height="45"
+                          />
+                          <div className="chat-user-box">
+                            <p className="user-title m-0">Jane Doe</p>
+                            <p className="text-muted">Junior Dev</p>
+                          </div>
+                        </Link>
 
-                      <Link to="#" className="d-flex">
-                        <img
-                          className="d-flex me-3 rounded-circle"
-                          src={avatar6}
-                          alt="optumus-suite"
-                          height="36"
-                        />
-                        <div className="chat-user-box">
-                          <p className="user-title m-0">Jay Doe</p>
-                          <p className="text-muted">Junior Dev</p>
-                        </div>
-                      </Link>
-                    </div>
+                        <Link to="#" className="d-flex candidate">
+                          <img
+                            className="d-flex me-3 rounded-circle"
+                            src={avatar6}
+                            alt="optumus-suite"
+                            height="45"
+                          />
+                          <div className="chat-user-box">
+                            <p className="user-title m-0">Jay Doe</p>
+                            <p className="text-muted">Junior Dev</p>
+                          </div>
+                        </Link>
+                      </div>
                     </CardBody>
                   </Card>
                 </Form>

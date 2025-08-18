@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { withRouter } from "react-router-dom"
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { 
   Card, CardTitle, CardBody, Col, Container, Row, Label, Input, FormFeedback, Form, InputGroup,
-  Nav, NavItem, NavLink, CardSubtitle, Button, TabContent, TabPane, Collapse, Table, UncontrolledTooltip
+  Nav, NavItem, NavLink, CardSubtitle, Button, TabContent, TabPane, Collapse, Table, UncontrolledTooltip, 
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
  } from "reactstrap";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -12,6 +14,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import InputMask from "react-input-mask"
 import classnames from "classnames";
 import JobSideBar from "./Jobs/JobSideBar";
+
+import avatar2 from "/src/assets/images/users/avatar-2.jpg"
 
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css";
@@ -23,7 +27,8 @@ const   ViewJob = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.contacts);
-  const [customActiveTab, setcustomActiveTab] = useState("1");
+  const [activeStatusTab, setActiveStatusTab] = useState("1");
+  const [activeCandidateTab, setActiveCandidateTab] = useState("1");
 
   const [selectedGroup, setselectedGroup] = useState(null);
   const handleSelectGroup = (selectedGroup) => {
@@ -44,7 +49,8 @@ const   ViewJob = () => {
   ];
 
   // Find the candidate to edit
-  const candidate = users.find((user) => user.id === parseInt(id));
+  // const candidate = users.find((user) => user.id === parseInt(id));
+  const candidate = 1
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -72,15 +78,28 @@ const   ViewJob = () => {
     },
   });
 
+
   if (!candidate) {
-    return <div>Candidate not found</div>;
+    return <React.Fragment>
+      <div className="page-content">
+        <Container fluid>
+          Candidate not found
+        </Container>
+      </div>
+    </React.Fragment>;
   }
 
-  const toggleCustom = tab => {
-    if (customActiveTab !== tab) {
-      setcustomActiveTab(tab);
+  const toggleActiveStatusTab = tab => {
+    if (activeStatusTab !== tab) {
+      setActiveStatusTab(tab);
     }
-  };
+  }
+
+  const toggleActiveCandidateTab = tab => {
+    if (activeStatusTab !== tab) {
+      setActiveStatusTab(tab);
+    }
+  }
 
   const jobStatuses = [
     {id: 0, statusName: "Schedule 1st Interview", statusNameMini: "Schedule 1st", },
@@ -151,6 +170,13 @@ const   ViewJob = () => {
     ],
     []
   );
+  const [searchMenu, setSearchMenu] = useState(false);
+  const [settingsMenu, setSettingsMenu] = useState(false);
+  const [otherMenu, setOtherMenu] = useState(false);
+  const [isMenu, setisMenu] = useState(false)
+  const toggleMenu = () => {
+    setisMenu(!isMenu)
+  }
 
   const interviewData = [
     {
@@ -183,10 +209,10 @@ const   ViewJob = () => {
                         <NavLink 
                           style={{ cursor: "pointer" }}
                           className={classnames({
-                            active: customActiveTab === status.id,
+                            active: activeStatusTab === "navitem_status_" + status.id,
                           })}
                           onClick={() => {
-                            toggleCustom(status.id);
+                            toggleActiveStatusTab("navitem_status_" + status.id);
                           }}
                         >
                           <span className="d-block d-sm-none">
@@ -217,6 +243,170 @@ const   ViewJob = () => {
               <JobSideBar />
             </Col>
             <Col xl="8">
+
+              <Card>
+                <CardBody className="border-bottom">
+                  <Row>
+                    <Col xs="12">
+                      <ul className="list-inline user-chat-nav text-end mb-0">
+                        <li className="list-inline-item d-none d-sm-inline-block">
+                          <Dropdown
+                            isOpen={searchMenu}
+                            toggle={() => {
+                              setSearchMenu(!searchMenu);
+                            }}
+                          >
+                            <DropdownToggle
+                              tag="i"
+                              className="btn nav-btn"
+                              type="button"
+                            >
+                              <i className="bx bx-search-alt-2" />
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-end py-0 dropdown-menu-md">
+                              <Form className="p-3">
+                                <div className="m-0">
+                                  <InputGroup>
+                                    <Input
+                                      type="text"
+                                      className="form-control"
+                                      placeholder="Search ..."
+                                      aria-label="Recipient's username"
+                                    />
+                                    <button className="btn btn-primary" type="submit">
+                                      <i className="mdi mdi-magnify"></i>
+                                    </button>
+                                  </InputGroup>
+                                </div>
+                              </Form>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+                        <li className="list-inline-item  d-none d-sm-inline-block">
+                          <Dropdown
+                            isOpen={settingsMenu}
+                            toggle={() => {
+                              setSettingsMenu(!settingsMenu);
+                            }}
+                          >
+                            <DropdownToggle
+                              tag="i"
+                              className="btn nav-btn"
+                              type="button"
+                            >
+                              <i className="bx bx-cog" />
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem href="#">View Profile</DropdownItem>
+                              <DropdownItem href="#">Clear chat</DropdownItem>
+                              <DropdownItem href="#">Muted</DropdownItem>
+                              <DropdownItem href="#">Delete</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+
+                        <li className="list-inline-item">
+                          <Dropdown
+                            isOpen={otherMenu}
+                            toggle={() => {
+                              setOtherMenu(!otherMenu);
+                            }}
+                          >
+                            <DropdownToggle
+                              tag="i"
+                              className="btn nav-btn"
+                              type="button"
+                            >
+                              <i className="bx bx-dots-horizontal-rounded" />
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-end">
+                              <DropdownItem href="#">Action</DropdownItem>
+                              <DropdownItem href="#">Another Action</DropdownItem>
+                              <DropdownItem href="#">Something else</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+
+                        <li className="list-inline-item">
+                          <Dropdown
+                          >
+                            <DropdownToggle
+                              tag="i"
+                              className="btn nav-btn color-danger"
+                              type="button"
+                            >
+                              <i className="mdi mdi-hand-left text-danger" />
+                            </DropdownToggle>
+                          </Dropdown>
+                        </li>
+                        <li className="list-inline-item">
+                          <Dropdown
+                            isOpen={isMenu}
+                            toggle={toggleMenu}
+                          >
+                            <DropdownToggle
+                              type="button"
+                              tag="button"
+                              className="btn btn-light"
+                            >
+                              <i className="mdi mdi-wallet me-1" />
+                              <span className="d-none d-sm-inline-block">
+                                Move to <i className="mdi mdi-chevron-down" />
+                              </span>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              {
+                                jobStatuses.map((status, index) => (
+                                    <DropdownItem href="#">{ status.statusName }</DropdownItem>
+                                  )
+                                )
+                              }
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+                      </ul>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg="12">
+                      <Card>
+                        <CardBody>
+                          <div className="d-flex">
+                            <div className="me-3">
+                              <img
+                                src={avatar2}
+                                alt=""
+                                className="avatar-md rounded-circle img-thumbnail"
+                              />
+                            </div>
+                            <div className="flex-grow-1 align-self-center">
+                              <div className="text-muted">
+                                <h5>John Doe</h5>
+                                <p className="mb-1">john@abc.com</p>
+                                <p className="mb-0">Oxford University</p>
+                              </div>
+                            </div>
+                            
+                            {/* Data */}
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+
+            
+
+
+
+
+
+
+
+
+
+
               <Card>
                 <CardBody>
                   {/* <CardTitle className="h4">Custom Tabs</CardTitle> */}
@@ -226,64 +416,64 @@ const   ViewJob = () => {
                       <NavLink
                         style={{ cursor: "pointer" }}
                         className={classnames({
-                          active: customActiveTab === "1",
+                          active: activeStatusTab === "1",
                         })}
                         onClick={() => {
-                          toggleCustom("1");
+                          toggleActiveStatusTab("1");
                         }}
                       >
                         <span className="d-block d-sm-none">
                           <i className="fas fa-home"></i>
                         </span>
-                        <span className="d-none d-sm-block">Recruiting Tracks</span>
+                        <span className="d-none d-sm-block">Profile</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         style={{ cursor: "pointer" }}
                         className={classnames({
-                          active: customActiveTab === "2",
+                          active: activeStatusTab === "2",
                         })}
                         onClick={() => {
-                          toggleCustom("2");
+                          toggleActiveStatusTab("2");
                         }}
                       >
                         <span className="d-block d-sm-none">
                           <i className="far fa-user"></i>
                         </span>
-                        <span className="d-none d-sm-block">Candidate History</span>
+                        <span className="d-none d-sm-block">Timeline</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         style={{ cursor: "pointer" }}
                         className={classnames({
-                          active: customActiveTab === "3",
+                          active: activeStatusTab === "3",
                         })}
                         onClick={() => {
-                          toggleCustom("3");
+                          toggleActiveStatusTab("3");
                         }}
                       >
                         <span className="d-block d-sm-none">
                           <i className="far fa-envelope"></i>
                         </span>
-                        <span className="d-none d-sm-block">Attachments</span>
+                        <span className="d-none d-sm-block">Review</span>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         style={{ cursor: "pointer" }}
                         className={classnames({
-                          active: customActiveTab === "4",
+                          active: activeStatusTab === "4",
                         })}
                         onClick={() => {
-                          toggleCustom("4");
+                          toggleActiveStatusTab("4");
                         }}
                       >
                         <span className="d-block d-sm-none">
                           <i className="fas fa-cog"></i>
                         </span>
-                        <span className="d-none d-sm-block">Settings</span>
+                        <span className="d-none d-sm-block">Comments</span>
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -296,4 +486,4 @@ const   ViewJob = () => {
   );
 };
 
-export default ViewJob;
+export default withRouter(ViewJob);
