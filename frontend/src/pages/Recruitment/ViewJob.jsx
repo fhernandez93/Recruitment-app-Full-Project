@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { 
   Card, CardTitle, CardBody, Col, Container, Row, Label, Input, FormFeedback, Form, InputGroup,
   Nav, NavItem, NavLink, CardSubtitle, Button, TabContent, TabPane, Collapse, Table, UncontrolledTooltip, 
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Badge
  } from "reactstrap";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -23,7 +23,7 @@ import Flatpickr from "react-flatpickr";
 import { addEventSuccess } from './../../store/calendar/actions';
 
 const   ViewJob = () => {
-  const { id } = useParams(); // Get the candidate ID from the URL
+  const JobId = useParams().id; // Get the candidate ID from the URL
   const history = useHistory();
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.contacts);
@@ -101,19 +101,19 @@ const   ViewJob = () => {
     }
   }
 
-  const jobStatuses = [
-    {id: 0, statusName: "Schedule 1st Interview", statusNameMini: "Schedule 1st", },
-    {id: 1, statusName: "Schedule 2nd Interview", statusNameMini: "Schedule 2nd", },
-    {id: 2, statusName: "Schedule Final Interview", statusNameMini: "Schedule Final", },
-    {id: 3, statusName: "1st Interview Scheduled", statusNameMini: "1st Scheduled", },
-    {id: 4, statusName: "2nd Interview Scheduled", statusNameMini: "2nd Scheduled", },
-    {id: 5, statusName: "Final Interview Scheduled", statusNameMini: "Final Scheduled", },
-    {id: 6, statusName: "Pass on Candidate", statusNameMini: "Pass", },
-    {id: 7, statusName: "Hold on Candidate", statusNameMini: "Hold", },
-    {id: 8, statusName: "Make Offer", statusNameMini: "Make Offer", },
-    {id: 9, statusName: "Offer Made", statusNameMini: "Offer Made", },
-    {id: 10, statusName: "Offer Accepted", statusNameMini: "Offer Accepted", },
-    {id: 11, statusName: "Hired for Position", statusNameMini: "Hired", },
+  const ApplicationStatuses = [
+    {ApplicationStatusId: 0, statusName: "Schedule 1st Interview", statusNameMini: "Schedule 1st", },
+    {ApplicationStatusId: 1, statusName: "Schedule 2nd Interview", statusNameMini: "Schedule 2nd", },
+    {ApplicationStatusId: 2, statusName: "Schedule Final Interview", statusNameMini: "Schedule Final", },
+    {ApplicationStatusId: 3, statusName: "1st Interview Scheduled", statusNameMini: "1st Scheduled", },
+    {ApplicationStatusId: 4, statusName: "2nd Interview Scheduled", statusNameMini: "2nd Scheduled", },
+    {ApplicationStatusId: 5, statusName: "Final Interview Scheduled", statusNameMini: "Final Scheduled", },
+    {ApplicationStatusId: 6, statusName: "Pass on CandApplicationStatusIdate", statusNameMini: "Pass", },
+    {ApplicationStatusId: 7, statusName: "Hold on CandApplicationStatusIdate", statusNameMini: "Hold", },
+    {ApplicationStatusId: 8, statusName: "Make Offer", statusNameMini: "Make Offer", },
+    {ApplicationStatusId: 9, statusName: "Offer Made", statusNameMini: "Offer Made", },
+    {ApplicationStatusId: 10, statusName: "Offer Accepted", statusNameMini: "Offer Accepted", },
+    {ApplicationStatusId: 11, statusName: "Hired for Position", statusNameMini: "Hired", },
   ]
 
   const certificationColumns = useMemo(
@@ -204,27 +204,27 @@ const   ViewJob = () => {
                 <Nav tabs className="nav-tabs-custom nav-justified">
                   {
                     // {id: 0, statusName: "", statusNameMini: "", },
-                    jobStatuses.map((status, index) => (
-                      <NavItem key={"navitem_status_" + status.id}>
+                    ApplicationStatuses.map((status, index) => (
+                      <NavItem key={"navitem_status_" + status.ApplicationStatusId}>
                         <NavLink 
                           style={{ cursor: "pointer" }}
                           className={classnames({
-                            active: activeStatusTab === "navitem_status_" + status.id,
+                            active: activeStatusTab === "navitem_status_" + status.ApplicationStatusId,
                           })}
                           onClick={() => {
-                            toggleActiveStatusTab("navitem_status_" + status.id);
+                            toggleActiveStatusTab("navitem_status_" + status.ApplicationStatusId);
                           }}
                         >
                           <span className="d-block d-sm-none">
                             <i className="fas fa-home"></i>
                           </span>
 
-                          <span className="d-none d-sm-block" id={`status_tooltip_${status.id}`}>
+                          <span className="d-none d-sm-block" id={`status_tooltip_${status.ApplicationStatusId}`}>
                             { status.statusNameMini }
                           </span>
                           <UncontrolledTooltip
                             placement="top"
-                            target={`status_tooltip_${status.id}`}
+                            target={`status_tooltip_${status.ApplicationStatusId}`}
                           >
                             { status.statusName }
                           </UncontrolledTooltip>
@@ -240,7 +240,7 @@ const   ViewJob = () => {
 
         <Row>
             <Col xl="4">
-              <JobSideBar />
+              <JobSideBar JobId={JobId} ApplicationStatuses={ApplicationStatuses} />
             </Col>
             <Col xl="8">
 
@@ -249,7 +249,9 @@ const   ViewJob = () => {
                   <Row>
                     <Col xs="12">
                       <ul className="list-inline user-chat-nav text-end mb-0">
-                        <li className="list-inline-item d-none d-sm-inline-block">
+                      
+                        {/* Search */}
+                        {/* <li className="list-inline-item d-none d-sm-inline-block">
                           <Dropdown
                             isOpen={searchMenu}
                             toggle={() => {
@@ -281,30 +283,9 @@ const   ViewJob = () => {
                               </Form>
                             </DropdownMenu>
                           </Dropdown>
-                        </li>
-                        <li className="list-inline-item  d-none d-sm-inline-block">
-                          <Dropdown
-                            isOpen={settingsMenu}
-                            toggle={() => {
-                              setSettingsMenu(!settingsMenu);
-                            }}
-                          >
-                            <DropdownToggle
-                              tag="i"
-                              className="btn nav-btn"
-                              type="button"
-                            >
-                              <i className="bx bx-cog" />
-                            </DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem href="#">View Profile</DropdownItem>
-                              <DropdownItem href="#">Clear chat</DropdownItem>
-                              <DropdownItem href="#">Muted</DropdownItem>
-                              <DropdownItem href="#">Delete</DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </li>
+                        </li> */}
 
+                        {/* Other */}
                         <li className="list-inline-item">
                           <Dropdown
                             isOpen={otherMenu}
@@ -327,6 +308,31 @@ const   ViewJob = () => {
                           </Dropdown>
                         </li>
 
+                        {/* Interview */}
+                        <li className="list-inline-item  d-none d-sm-inline-block">
+                          <Dropdown
+                            isOpen={settingsMenu}
+                            toggle={() => {
+                              setSettingsMenu(!settingsMenu);
+                            }}
+                          >
+                            <DropdownToggle
+                              tag="i"
+                              className="btn nav-btn"
+                              type="button"
+                            >
+                              <i className="mdi mdi-calendar-month" />
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem href="#">View Profile</DropdownItem>
+                              <DropdownItem href="#">Clear chat</DropdownItem>
+                              <DropdownItem href="#">Muted</DropdownItem>
+                              <DropdownItem href="#">Delete</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+
+                        {/* Stop */}
                         <li className="list-inline-item">
                           <Dropdown
                           >
@@ -339,6 +345,8 @@ const   ViewJob = () => {
                             </DropdownToggle>
                           </Dropdown>
                         </li>
+
+                        {/* Move to */}
                         <li className="list-inline-item">
                           <Dropdown
                             isOpen={isMenu}
@@ -356,8 +364,8 @@ const   ViewJob = () => {
                             </DropdownToggle>
                             <DropdownMenu>
                               {
-                                jobStatuses.map((status, index) => (
-                                    <DropdownItem href="#">{ status.statusName }</DropdownItem>
+                                ApplicationStatuses.map((status, index) => (
+                                    <DropdownItem href="#" key={`moveto_${status.ApplicationStatusId}`}>{ status.statusName }</DropdownItem>
                                   )
                                 )
                               }
@@ -369,8 +377,8 @@ const   ViewJob = () => {
                   </Row>
                   <Row>
                     <Col lg="12">
-                      <Card>
-                        <CardBody>
+                      <div>
+                        <div className="viewjob-main">
                           <div className="d-flex">
                             <div className="me-3">
                               <img
@@ -379,18 +387,25 @@ const   ViewJob = () => {
                                 className="avatar-md rounded-circle img-thumbnail"
                               />
                             </div>
-                            <div className="flex-grow-1 align-self-center">
+                            <div className="flex-grow-1 align-self-center main-card">
                               <div className="text-muted">
-                                <h5>John Doe</h5>
+                                <h3>John Doe</h3>
                                 <p className="mb-1">john@abc.com</p>
                                 <p className="mb-0">Oxford University</p>
+                                <Badge className="bg-mute">
+                                  Mexico City, Mexico
+                                </Badge>
+                                &nbsp;
+                                <Badge className="bg-mute">
+                                  +1 234 567 8901
+                                </Badge>
                               </div>
                             </div>
                             
                             {/* Data */}
                           </div>
-                        </CardBody>
-                      </Card>
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </CardBody>

@@ -29,10 +29,12 @@ import "toastr/build/toastr.min.css";
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_BACKEND_URL;
 
-const JobSideBar = (props) => {
-  const [customActiveTab, setcustomActiveTab] = useState("1");
+const JobSideBar = ({JobId, ApplicationStatuses}) => {
+  const [selectedCandidates, setSelectedCandidates] = useState([]);
+  const [customActiveTab, setCustomActiveTab] = useState("Qualified");
   const [activeTab, setActiveTab] = useState("1");
-  const [initialValues, setInitialValues] = useState(null);
+  const [allApplications, setAllApplications] = useState([]);
+  const [allCandidates, setAllCandidates] = useState([]);
   const [selectedGroup, setselectedGroup] = useState(null);
   const [englishCertificationList, setEnglishCertificationList] = useState([]);
   const [globalStatusList, setGlobalStatusList] = useState([]);
@@ -41,7 +43,7 @@ const JobSideBar = (props) => {
 
   const toggleCustom = tab => {
     if (customActiveTab !== tab) {
-      setcustomActiveTab(tab);
+      setCustomActiveTab(tab);
     }
   }
 
@@ -56,7 +58,8 @@ const JobSideBar = (props) => {
   };
 
   const showQuickToastr = (message, timeout = 700) => {
-    toastr.options.timeOut = timeout; // Dynamically set the timeOut value
+    toastr.options.timeOut = ti
+    meout; // Dynamically set the timeOut value
     toastr.options.progressBar = false
     toastr.success(message); // Call toastr with the message
   };
@@ -80,6 +83,66 @@ const JobSideBar = (props) => {
     WorkHistory: Yup.string().max(2500),
     CandidateNotes: Yup.string().max(2500),
   });
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+  
+        const response = await axios.get(`api/applications/job/${JobId}`);
+        if (response.data.length === 0) {
+          toastr.error("No applications found.");
+        } else {
+          setAllApplications(response.data);
+          console.log("Applications fetched:", response.data);
+        }
+
+      } catch (error) {
+        toastr.error("Failed to load the information of the applications.");
+      }
+    };
+
+    const fetchCandidates = async () => {
+      try {
+  
+        const response = await axios.get(`api/candidates`);
+        if (response.data.length === 0) {
+          toastr.error("No candidates found.");
+        } else {
+          setAllCandidates(response.data);
+        }
+
+      } catch (error) {
+        toastr.error("Failed to load the information of the candidate.");
+      }
+    };
+  
+    fetchApplications()
+    fetchCandidates()
+  }, [])
+
+  const handleCheckboxChange = (candidateId) => {
+    setSelectedCandidates(prev =>
+      prev.includes(candidateId)
+        ? prev.filter(id => id !== candidateId) // If it is here, remove it
+        : [...prev, candidateId]               // It is not here, add it
+    );
+  };
+
+  const handleAddCandidates = async () => {
+    try {
+      await axios.post("api/applications", {
+        JobId: parseInt(JobId), // From props
+        ApplicationStatusId: 2, //ApplicationStatuses.shift().ApplicationStatusId, // From props
+        Candidates: selectedCandidates, // IDs array
+      });
+
+      setSelectedCandidates([]); // Clear selected candidates
+      toastr.success("Candidates applied successfully!");
+    } catch (err) {
+      toastr.error("Failed to create applications.");
+    }
+  };
+
 
   const CustomPrevArrow = () => {
     return (
@@ -127,7 +190,6 @@ const JobSideBar = (props) => {
             ({ values, handleChange, handleBlur, handleSubmit, isSubmitting, errors, touched }) => {
 
               return (
-                <Form>
                   <Card className="overflow-hidden">
                     <div className="bg-primary bg-soft">
                       <Row>
@@ -139,10 +201,10 @@ const JobSideBar = (props) => {
                                   <NavLink
                                     style={{ cursor: "pointer" }}
                                     className={classnames({
-                                      active: customActiveTab === "1",
+                                      active: customActiveTab === "Qualified",
                                     })}
                                     onClick={() => {
-                                      toggleCustom("1");
+                                      toggleCustom("Qualified");
                                     }}
                                   >
                                     <span className="d-block d-sm-none">
@@ -155,10 +217,10 @@ const JobSideBar = (props) => {
                                   <NavLink
                                     style={{ cursor: "pointer" }}
                                     className={classnames({
-                                      active: customActiveTab === "2",
+                                      active: customActiveTab === "Disqualified",
                                     })}
                                     onClick={() => {
-                                      toggleCustom("2");
+                                      toggleCustom("Disqualified");
                                     }}
                                   >
                                     <span className="d-block d-sm-none">
@@ -167,111 +229,108 @@ const JobSideBar = (props) => {
                                     <span className="d-none d-sm-block">Disqualified 0</span>
                                   </NavLink>
                                 </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    style={{ cursor: "pointer" }}
+                                    className={classnames({
+                                      active: customActiveTab === "Add",
+                                    })}
+                                    onClick={() => {
+                                      toggleCustom("Add");
+                                    }}
+                                  >
+                                    <span className="d-block d-sm-none">
+                                      <i className="far fa-envelope"></i>
+                                    </span>
+                                    <span className="d-none d-sm-block">Add</span>
+                                  </NavLink>
+                                </NavItem>
                               </Nav>
                             </Col>
                           </CardBody>
                         </Card>
                       </Row>
                     </div>
-                    <CardBody className="pt-0">
-                      <div className="mt-2">
-                        <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
-                          <div className="search-box me-2">
-                            <div className="position-relative">
-                              <Input
-                                type="text"
-                                className="form-control "
-                                placeholder="Search..."
-                              />
-                              <i className="bx bx-search-alt search-icon" />
+                    { 
+                      customActiveTab === "Add" && (
+                        <>
+                          <CardBody className="pt-0">
+                            <div className="mt-2">
+                              <div className="mt-4 mt-sm-0 d-flex align-items-center">
+                                <div className="search-box me-2 flex-grow-1">
+                                  <div className="position-relative ">
+                                    <Input
+                                      type="text"
+                                      className="form-control "
+                                      placeholder="Search..."
+                                    />
+                                    <i className="bx bx-search-alt search-icon" />
+                                  </div>
+                                </div>
+                                <Nav className="product-view-nav" pills>
+                                  <NavItem>
+                                    <NavLink
+                                      className="bg-secondary text-white"
+                                      onClick={() => {
+                                        alert("Add Candidate button clicked");
+                                      }}
+                                    >
+                                      <i className="bx bx-list-ul" />
+                                    </NavLink>
+                                  </NavItem>
+                                </Nav>
+                                <Nav className="product-view-nav" pills>
+                                  <NavItem>
+                                    <NavLink
+                                      className="bg-primary text-white"
+                                      onClick={handleAddCandidates}
+                                    >
+                                      <i className="bx bx-user-plus" />
+                                    </NavLink>
+                                  </NavItem>
+                                </Nav>
+                              </div>
                             </div>
-                          </div>
-                          <Nav className="product-view-nav" pills>
-                            <NavItem>
-                              <NavLink
-                                className={classnames({
-                                  active: activeTab === "1",
-                                })}
-                                onClick={() => {
-                                  toggleTab("1")
-                                }}
-                              >
-                                <i className="bx bx-grid-alt" />
-                              </NavLink>
-                            </NavItem>
-                            <NavItem>
-                              <NavLink
-                                className={classnames({
-                                  active: activeTab === "2",
-                                })}
-                                onClick={() => {
-                                  toggleTab("2")
-                                }}
-                              >
-                                <i className="bx bx-list-ul" />
-                              </NavLink>
-                            </NavItem>
-                          </Nav>
-                        </Form>
-                      </div>
-                    </CardBody>
-                    <CardBody className="pt-0 viewjob-sidebar">
-                      <div className="mt-2">
-                        <Link to="#" className="d-flex candidate">
-                          <img
-                            className="d-flex me-3 rounded-circle"
-                            src={avatar2}
-                            alt="optumus-suite"
-                            height="45"
-                          />
-                          <div className="flex-grow-1 chat-user-box">
-                            <p className="user-title m-0">John Doe</p>
-                            <p className="text-muted">Senior Dev</p>
-                          </div>
-                        </Link>
+                          </CardBody>
+                          <CardBody className="pt-0 viewjob-sidebar">
+                            <div className="mt-2 ">
+                              {
+                                allCandidates.map((candidate, index) => {
+                                  return (
+                                    <div key={index} className="candidate-row">
+                                      <div className="d-flex align-items-center candidate">
+                                        <input
+                                          className="form-check-input me-2"
+                                          type="checkbox"
+                                          onChange={() => handleCheckboxChange(candidate.CandidateId)}
+                                        />
+                                        <Link to="#" className="d-flex align-items-center">
+                                          <img
+                                            className="d-flex me-3 rounded-circle"
+                                            src={candidate.Avatar || avatar1}
+                                            alt="optumus-suite"
+                                            height="45"
+                                          />
+                                          <div className="flex-grow-1 chat-user-box">
+                                            <p className="user-title m-0">
+                                              {candidate.FirstName} {candidate.LastName}
+                                            </p>
+                                            <p className="text-muted">{candidate.EducationNotes}</p>
+                                          </div>
+                                        </Link>
+                                      </div>
+                                    </div>
 
-                        <Link to="#" className="d-flex candidate">
-                          <img
-                            className="d-flex me-3 rounded-circle"
-                            src={avatar3}
-                            alt="optumus-suite"
-                            height="45"
-                          />
-                          <div className="chat-user-box">
-                            <p className="user-title m-0">Johnny Doe</p>
-                            <p className="text-muted">Senior Dev</p>
-                          </div>
-                        </Link>
+                                  )
+                                })
+                              }
 
-                        <Link to="#" className="d-flex candidate">
-                          <img
-                            className="d-flex me-3 rounded-circle"
-                            src={avatar4}
-                            alt="optumus-suite"
-                            height="45"
-                          />
-                          <div className="chat-user-box">
-                            <p className="user-title m-0">Jane Doe</p>
-                            <p className="text-muted">Junior Dev</p>
-                          </div>
-                        </Link>
-
-                        <Link to="#" className="d-flex candidate">
-                          <img
-                            className="d-flex me-3 rounded-circle"
-                            src={avatar6}
-                            alt="optumus-suite"
-                            height="45"
-                          />
-                          <div className="chat-user-box">
-                            <p className="user-title m-0">Jay Doe</p>
-                            <p className="text-muted">Junior Dev</p>
-                          </div>
-                        </Link>
-                      </div>
-                    </CardBody>
+                            </div>
+                          </CardBody>
+                        </>
+                      )  
+                    }
                   </Card>
-                </Form>
               )
             }
           }
@@ -282,6 +341,7 @@ const JobSideBar = (props) => {
 }
 
 import PropTypes from "prop-types";
+import App from './../../../App';
 
 JobSideBar.propTypes = {
   t: PropTypes.func.isRequired,
