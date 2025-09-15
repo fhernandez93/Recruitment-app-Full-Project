@@ -166,13 +166,12 @@ def create_applications():
 # Whitelist of allowed table names to prevent SQL injection
 ALLOWED_TABLES = {
     'applications': '[Applications]',
-    'candidates': '[Candidates]',
     'global-statuses':'[GlobalStatus]',
     'english-certifications':'[EnglishCertification]',
     'education-levels':'[EducationLevel]',
 }
 
-# GET all candidates
+# GET all 
 @db_blueprint.route('/api/<string:table_key>', methods=['GET'])
 def get_all_from_table(table_key):
     """Generic handler to get all rows from a given allowed table."""
@@ -192,13 +191,70 @@ def get_all_from_table(table_key):
     finally:
         conn.close()
 
+# GET all candidates with pagination and sorting
+@db_blueprint.route('/api/candidates', methods=['GET'])
+def get_candidates_paginated():
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 20))
+    sort = request.args.get('sort', 'FirstName')
+    order = request.args.get('order', 'asc').lower()
+    sort2 = request.args.get('sort2', 'LastName')
+    order2 = request.args.get('order2', 'asc').lower()
+    search = request.args.get('search', '').strip()
+
+    allowed_sort_columns = ['CandidateId', 'FirstName', 'LastName', 'Email', 'DateOfBirth']
+    if sort not in allowed_sort_columns or sort2 not in allowed_sort_columns:
+        return jsonify({'error': f'Invalid sort field. Allowed: {allowed_sort_columns}'}), 400
+
+    if order not in ['asc', 'desc'] or order2 not in ['asc', 'desc']:
+        return jsonify({'error': 'Order must be \"asc\" or \"desc\"'}), 400
+
+    offset = (page - 1) * limit
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        base_query = "FROM Candidates"
+        params = []
+
+        if search:
+            base_query += " WHERE LOWER(CONCAT(FirstName, ' ', LastName)) LIKE ?"
+            params.append(f"%{search.lower()}%")  # force lowercase in param too
+
+        cursor.execute(f"SELECT COUNT(*) {base_query}", params)
+        total = cursor.fetchone()[0]
+
+        query = f"""
+            SELECT * {base_query}
+            ORDER BY {sort} {order.upper()}, {sort2} {order2.upper()}
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+        """
+        params.extend([offset, limit])
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+
+        data = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+
+        return jsonify({
+            'page': page,
+            'limit': limit,
+            'total': total,
+            'pages': (total + limit - 1) // limit,
+            'results': data
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        conn.close()
+
+
 
 # GET one candidate by ID
 @db_blueprint.route('/api/candidate/<int:id>', methods=['GET'])
 def get_candidate(id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Candidates WHERE CandidateID = ?", (id,))
+    cursor.execute("SELECT * FROM Candidates WHERE CandidateId = ?", (id,))
     row = cursor.fetchone()
     conn.close()
     if row:
@@ -232,7 +288,7 @@ def update_candidate(id):
     fields = ', '.join([f"{k}=?" for k in data])
     values = list(data.values()) + [id]
 
-    cursor.execute(f"UPDATE Candidates SET {fields} WHERE CandidateID = ?", values)
+    cursor.execute(f"UPDATE Candidates SET {fields} WHERE CandidateId = ?", values)
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate updated'})
@@ -248,7 +304,7 @@ def patch_candidate(id):
     fields = ', '.join([f"{k}=?" for k in data])
     values = list(data.values()) + [id]
 
-    cursor.execute(f"UPDATE Candidates SET {fields} WHERE CandidateID = ?", values)
+    cursor.execute(f"UPDATE Candidates SET {fields} WHERE CandidateId = ?", values)
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate partially updated'})
@@ -258,7 +314,7 @@ def patch_candidate(id):
 def delete_candidate(id):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM Candidates WHERE CandidateID = ?", (id,))
+    cursor.execute("DELETE FROM Candidates WHERE CandidateId = ?", (id,))
     conn.commit()
     conn.close()
     return jsonify({'message': 'Candidate deleted'})
